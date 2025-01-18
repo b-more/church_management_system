@@ -36,8 +36,8 @@
     <section id="home" class="relative h-screen pt-16">
         <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-accent/80">
             <!-- Replace with your church image -->
-            <img src="{{ asset('images/hero.jpg') }}" alt="Church Service" 
-                 class="w-full h-full object-cover mix-blend-overlay"
+            <img src="{{ asset('images/pastors.jpg') }}" alt="Church Service" 
+                 class="w-full h-full object-fit mix-blend-overlay"
                  onerror="this.src='https://via.placeholder.com/1920x1080'">
         </div>
         <div class="relative h-full flex items-center justify-center text-center px-4">
@@ -46,7 +46,7 @@
                     Welcome to His Kingdom Church
                 </h1>
                 <p class="text-lg md:text-xl text-white/90 mb-8">
-                    A place where faith grows and community thrives
+                    A place where God lives and visits other places
                 </p>
                 <a href="#contact" 
                    class="inline-block bg-secondary text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-secondary/90 transition-colors">
@@ -71,8 +71,8 @@
                                   d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-4">Our Mission</h3>
-                    <p class="text-gray-600">To bring people closer to God through worship and community</p>
+                    <h3 class="text-xl font-semibold mb-4">Who We Are</h3>
+                    <p class="text-gray-600">We are a multi-faceted, church planting, disciple making and teaching based ministry.</p>
                 </div>
 
                 <div class="bg-gray-50 p-8 rounded-lg text-center">
@@ -84,8 +84,8 @@
                                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-4">Our Vision</h3>
-                    <p class="text-gray-600">A Christ-centered community impacting lives</p>
+                    <h3 class="text-xl font-semibold mb-4">Our Mandate</h3>
+                    <p class="text-gray-600">To raise leaders of kingdom influence at every level and in every sphere of life.</p>
                 </div>
 
                 <div class="bg-gray-50 p-8 rounded-lg text-center">
@@ -95,8 +95,41 @@
                                   d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-4">Our Community</h3>
-                    <p class="text-gray-600">A welcoming family of believers growing together in faith</p>
+                    <h3 class="text-xl font-semibold mb-4">Our Mission</h3>
+                    <p class="text-gray-600">To reach the lost for Christ, train them in the Word of God and send them as leaders, representatives of Christ and ambassadors of Gods’ kingdom to their world.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-lg text-center">
+                    <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Our Motto</h3>
+                    <p class="text-gray-600">“Raising Kingdom Ambassadors”</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-lg text-center">
+                    <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Our Vision</h3>
+                    <p class="text-gray-600">“To be a global ministry which reaches out to the lost, plants churches, makes disciples and raises leaders of global influence in their sphere of calling”.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-lg text-center">
+                    <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Extended Vision</h3>
+                    <p class="text-gray-600">As a ministry, it is our vision to be present on every continent and in every country of the world in a significant and relevant way. </p>
                 </div>
             </div>
         </div>
@@ -118,7 +151,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
-                            <span>10:00 AM - Main Service</span>
+                            <span>08:30 AM - 12:30 PM Main Service</span>
                         </div>
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,20 +160,20 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
-                            <span>Main Sanctuary</span>
+                            <span>International Prayer Center (IPC)</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="bg-white p-8 rounded-lg shadow-sm">
-                    <h3 class="text-2xl font-semibold text-primary mb-6">Bible Study</h3>
+                    <h3 class="text-2xl font-semibold text-primary mb-6">Midweek Service</h3>
                     <div class="space-y-4">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
-                            <span>Wednesday 6:00 PM</span>
+                            <span>Wednesday 5:30 PM - 7:00 PM</span>
                         </div>
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,7 +182,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
-                            <span>Fellowship Hall</span>
+                            <span>International Prayer Center (IPC)</span>
                         </div>
                     </div>
                 </div>
@@ -202,6 +235,10 @@
                     </div>
                     <div>
                         <input type="email" name="email" placeholder="Your Email" required
+                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <input type="phone" name="phone" placeholder="Your Phone number" required
                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary">
                     </div>
                     <div>

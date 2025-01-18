@@ -100,7 +100,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold mb-2">Sunday Service</h3>
-                    <p class="text-secondary font-medium mb-4">10:00 AM</p>
+                    <p class="text-secondary font-medium mb-4">08:30 AM - 12:30 PM</p>
                     <p class="text-gray-600">Experience powerful worship, relevant teaching, and warm fellowship every Sunday morning.</p>
                 </div>
 
@@ -112,9 +112,9 @@
                                   d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Bible Study</h3>
-                    <p class="text-secondary font-medium mb-4">Wednesday 6:00 PM</p>
-                    <p class="text-gray-600">Deepen your understanding of God's Word through in-depth Bible study and discussion.</p>
+                    <h3 class="text-xl font-semibold mb-2">Midweek Services</h3>
+                    <p class="text-secondary font-medium mb-4">Wednesday 5:30 PM - 7:00 PM</p>
+                    <p class="text-gray-600">Deepen your understanding of God's Word through in-depth Midweek service.</p>
                 </div>
 
                 <!-- Prayer Service -->
@@ -125,9 +125,9 @@
                                   d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Prayer Service</h3>
-                    <p class="text-secondary font-medium mb-4">Friday 5:30 PM</p>
-                    <p class="text-gray-600">Join us for powerful intercessory prayer and spiritual warfare.</p>
+                    <h3 class="text-xl font-semibold mb-2">Online Prayer Service</h3>
+                    <p class="text-secondary font-medium mb-4">Friday 9:00 PM</p>
+                    <p class="text-gray-600">Join us for powerful intercessory prayer and spiritual warfare online.</p>
                 </div>
             </div>
         </div>
@@ -146,7 +146,7 @@
                                   d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Children's Ministry</h3>
+                    <h3 class="text-xl font-semibold mb-2">King's Kids Ministry</h3>
                     <p class="text-gray-600">Nurturing young hearts in faith through age-appropriate teaching and activities.</p>
                 </div>
 
@@ -158,7 +158,7 @@
                                   d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Youth Ministry</h3>
+                    <h3 class="text-xl font-semibold mb-2">Transformed Youth Ministry</h3>
                     <p class="text-gray-600">Empowering the next generation through relevant teaching and mentorship.</p>
                 </div>
 
@@ -170,7 +170,7 @@
                                   d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Women's Ministry</h3>
+                    <h3 class="text-xl font-semibold mb-2">Royal Women's Ministry</h3>
                     <p class="text-gray-600">Building strong women of faith through fellowship and discipleship.</p>
                 </div>
 
@@ -183,7 +183,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold mb-2">Men's Ministry</h3>
-                    <p class="text-gray-600">Developing godly men through fellowship and spiritual growth.</p>
+                    <p class="text-gray-600">Developing Godly men through fellowship and spiritual growth.</p>
                 </div>
             </div>
         </div>
