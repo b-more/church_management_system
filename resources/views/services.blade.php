@@ -133,6 +133,131 @@
         </div>
     </div>
 
+    <!-- Latest Services & Recordings -->
+    <div class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-primary text-center mb-12">Latest Services & Messages</h2>
+            
+            @if($services->count() > 0)
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    @foreach($services as $service)
+                        <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                            <!-- Service Banner -->
+                            <div class="relative h-48 bg-gray-200">
+                                @if($service->service_banner)
+                                    <img src="{{ Storage::url($service->service_banner) }}" 
+                                        alt="Service Banner"
+                                        class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-primary/10">
+                                        <svg class="w-12 h-12 text-primary/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                @endif
+                                
+                                <!-- Date Overlay -->
+                                <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm">
+                                    {{ $service->date->format('M d, Y') }}
+                                </div>
+                            </div>
+
+                            <!-- Service Details -->
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                                    {{ $service->message_title }}
+                                </h3>
+                                
+                                <!-- Preacher Info -->
+                                <div class="flex items-center mb-3 text-gray-600">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    </svg>
+                                    <span>
+                                        @if($service->preacher_type === 'visiting')
+                                            {{ $service->visiting_preacher_name }}
+                                            @if($service->visiting_preacher_church)
+                                                <span class="text-sm text-gray-500">
+                                                    ({{ $service->visiting_preacher_church }})
+                                                </span>
+                                            @endif
+                                        @else
+                                            {{ optional($service->preacher)->title }} 
+                                            {{ optional($service->preacher)->first_name }} 
+                                            {{ optional($service->preacher)->last_name }}
+                                        @endif
+                                    </span>
+                                </div>
+
+                                <!-- Bible Reading -->
+                                @if($service->bible_reading)
+                                    <div class="flex items-center mb-4 text-gray-600">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                        </svg>
+                                        <span class="text-sm">{{ $service->bible_reading }}</span>
+                                    </div>
+                                @endif
+
+                                <!-- Audio Player -->
+                                @if($service->audio_recording)
+                                    <div class="mt-4">
+                                        <audio controls class="w-full">
+                                            <source src="{{ Storage::url($service->audio_recording) }}" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                                @endif
+
+                                <!-- Stream Links -->
+                                <div class="mt-4 flex gap-2">
+                                    @if($service->facebook_stream_link)
+                                        <a href="{{ $service->facebook_stream_link }}" 
+                                        target="_blank"
+                                        class="inline-flex items-center text-sm text-primary hover:text-primary/80">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                            </svg>
+                                            Watch on Facebook
+                                        </a>
+                                    @endif
+
+                                    @if($service->youtube_stream_link)
+                                        <a href="{{ $service->youtube_stream_link }}" 
+                                        target="_blank"
+                                        class="inline-flex items-center text-sm text-primary hover:text-primary/80">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                            </svg>
+                                            Watch on YouTube
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- View All Button -->
+                @if($services->count() >= 6)
+                    <div class="text-center mt-12">
+                        <a href="{{ route('services.archive') }}" 
+                        class="inline-block bg-primary text-white px-8 py-3 rounded-full hover:bg-primary/90 transition-colors">
+                            View All Services
+                        </a>
+                    </div>
+                @endif
+            @else
+                <div class="text-center text-gray-500">
+                    <p>No service recordings available at the moment.</p>
+                </div>
+            @endif
+        </div>
+    </div>
+
     <!-- Ministries Section -->
     <div class="py-20 bg-gray-50">
         <div class="container mx-auto px-4">

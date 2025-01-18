@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,3 +44,7 @@ Route::get('/services', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+
+Route::get('/services', [ServiceController::class, 'index'])->name('services');
+Route::get('/services/archive', [ServiceController::class, 'archive'])->name('services.archive');
+Route::get('/services/{service}', [ServiceController::class, 'show'])->name('services.show');
