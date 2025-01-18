@@ -28,9 +28,9 @@ return new class extends Migration
             // Prevent duplicate attendance records
             $table->unique(['cell_group_meeting_id', 'member_id']);
             
-            // Indexes
-            $table->index(['cell_group_meeting_id', 'attendance_type']);
-            $table->index(['member_id', 'cell_group_meeting_id']);
+            // Custom shorter names for indexes
+            $table->index(['cell_group_meeting_id', 'attendance_type'], 'cg_meeting_attendance_type_idx');
+            $table->index(['member_id', 'cell_group_meeting_id'], 'member_meeting_idx');
         });
     }
 
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cell_group_attendances');
+        Schema::dropIfExists('cell_group_attendance');
     }
 };

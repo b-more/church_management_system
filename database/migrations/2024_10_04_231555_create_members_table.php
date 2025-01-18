@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('membership_class_status')->default('Not Started');
             $table->string('foundation_class_status')->default('Not Started');
             $table->string('leadership_class_status')->default('Not Started');
-            $table->foreignId('cell_group_id')->nullable()->constrained();
+            $table->unsignedBigInteger('cell_group_id')->nullable();
             
             // Additional Information
             $table->string('emergency_contact_name')->nullable();

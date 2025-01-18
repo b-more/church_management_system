@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('event_registrations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
-            $table->foreignId('member_id')->nullable()->constrained()->onDelete('set null');
+            $table->unsignedBigInteger('event_id')->nullable();
+            $table->unsignedBigInteger('member_id')->nullable();
             $table->string('registration_number')->unique();
             $table->string('status')->default('Pending'); // Pending, Confirmed, Cancelled
             $table->string('attendance_status')->nullable(); // Present, Absent
