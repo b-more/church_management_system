@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('phone_number')->nullable();
             $table->unsignedBigInteger('member_id')->nullable();
-            $table->decimal('amount', 10, 2);
+            $table->decimal('amount', 10, 2)->nullable();
             $table->string('giving_type')->nullable();
+            $table->string('full_name')->nullable();
             $table->string('payment_reference')->nullable();
-            $table->string('status')->default('pending');
+            $table->string('status')->default('pending')->nullable();
+            $table->unsignedBigInteger('offering_type_id')->nullable();
+            $table->string('ussd_session_id')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
         });

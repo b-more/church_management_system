@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class, 
             BranchSeeder::class,                // Then create users with those roles
             CellGroupSeeder::class,
-            
+            OfferingTypeSeeder::class,
             PaymentTypeSeeder::class,
             MemberSeeder::class,
         ]);

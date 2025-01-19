@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OfferingType extends Model
 {
-    use HasFactory;
 
-    protected $fillable = ['church_id', 'name', 'description', 'is_custom'];
+    protected $fillable = [
+        'name',
+        'description',
+        'is_active'
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean'
+    ];
 }

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('offering_types', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('description')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

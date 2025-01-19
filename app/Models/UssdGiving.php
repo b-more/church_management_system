@@ -12,8 +12,11 @@ class UssdGiving extends Model
         'amount',
         'giving_type', // tithe, offering, special_offering
         'payment_reference',
+        'full_name',
         'status', // pending, completed, failed
-        'notes'
+        'notes',
+        'offering_type_id',
+        'ussd_session_id'
     ];
 
     public function member()

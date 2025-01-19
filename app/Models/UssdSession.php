@@ -11,5 +11,10 @@ class UssdSession extends Model
         'phone_number',
         'case_no',
         'step_no',
+        'data'
+    ];
+
+    protected $casts = [
+        'data' => 'array'
     ];
 }
