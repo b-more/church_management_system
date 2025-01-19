@@ -28,46 +28,7 @@
 </head>
 <body class="bg-gray-50">
      <!-- Navigation -->
-     <nav class="bg-white shadow-sm fixed w-full z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <!-- Logo -->
-                <div class="flex items-center">
-                    <div class="h-8 w-8 bg-primary rounded-full flex items-center justify-center">
-                        <span class="text-white font-bold">HKC</span>
-                    </div>
-                    <span class="ml-2 text-lg font-bold text-primary">His Kingdom Church</span>
-                </div>
-
-                <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="text-primary font-medium hover:text-secondary transition-colors">Home</a>
-                    <a href="{{ route('about') }}" class="text-gray-600 hover:text-primary">About Us</a>
-                    <a href="#services" class="text-gray-600 font-medium hover:text-secondary transition-colors">Services</a>
-                    <a href="#contact" class="text-gray-600 font-medium hover:text-secondary transition-colors">Contact</a>
-                    <a href="/admin" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">Admin Portal</a>
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
-                    <button id="menuButton" class="text-gray-600 hover:text-primary">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t px-2 pt-2 pb-3 space-y-1">
-            <a href="#home" class="block px-3 py-2 text-primary font-medium hover:bg-gray-50 rounded-md">Home</a>
-            <a href="#about" class="block px-3 py-2 text-gray-600 font-medium hover:bg-gray-50 rounded-md">About</a>
-            <a href="#services" class="block px-3 py-2 text-gray-600 font-medium hover:bg-gray-50 rounded-md">Services</a>
-            <a href="#contact" class="block px-3 py-2 text-gray-600 font-medium hover:bg-gray-50 rounded-md">Contact</a>
-            <a href="/admin" class="block px-3 py-2 text-gray-600 font-medium hover:bg-gray-50 rounded-md">Admin Portal</a>
-        </div>
-    </nav>
+    @include('layouts.navigation')
 
     <!-- Hero Section -->
     <div class="relative pt-16 pb-32 flex content-center items-center justify-center min-h-[400px]">
@@ -328,63 +289,6 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-primary text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Quick Links -->
-                <div>
-                    <h3 class="text-secondary font-semibold text-lg mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#home" class="text-white/80 hover:text-secondary transition-colors">Home</a></li>
-                        <li><a href="#about" class="text-white/80 hover:text-secondary transition-colors">About</a></li>
-                        <li><a href="#services" class="text-white/80 hover:text-secondary transition-colors">Services</a></li>
-                        <li><a href="#contact" class="text-white/80 hover:text-secondary transition-colors">Contact</a></li>
-                        <li><a href="/admin" class="text-white/80 hover:text-secondary transition-colors">Admin Portal</a></li>
-                    </ul>
-                </div>
-
-                <!-- Service Times -->
-                <div>
-                    <h3 class="text-secondary font-semibold text-lg mb-4">Service Times</h3>
-                    <ul class="space-y-2">
-                        <li class="flex items-center">
-                            <svg class="w-4 h-4 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <span>Sunday: 10:00 AM</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-4 h-4 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <span>Wednesday: 6:00 PM</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Newsletter Signup -->
-                <div class="md:col-span-2">
-                    <h3 class="text-secondary font-semibold text-lg mb-4">Stay Connected</h3>
-                    <p class="text-white/80 mb-4">Subscribe to our newsletter for updates</p>
-                    <form class="flex" action="{{ route('newsletter.subscribe') }}" method="POST">
-                        @csrf
-                        <input type="email" name="email" placeholder="Your email" required
-                               class="flex-1 px-4 py-2 rounded-l-lg focus:outline-none text-gray-800">
-                        <button type="submit"
-                                class="bg-secondary px-4 py-2 rounded-r-lg hover:bg-secondary/90 transition-colors">
-                            Subscribe
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Bottom Footer -->
-            <div class="mt-12 pt-8 border-t border-white/10 text-center text-white/60">
-                <p>&copy; {{ date('Y') }} His Kingdom Church. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    @include('layouts.footer')
 </body>
 </html>

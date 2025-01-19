@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\UssdSessionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -48,3 +49,13 @@ Route::get('/contact', function () {
 Route::get('/services', [ServiceController::class, 'index'])->name('services');
 Route::get('/services/archive', [ServiceController::class, 'archive'])->name('services.archive');
 Route::get('/services/{service}', [ServiceController::class, 'show'])->name('services.show');
+
+// Route::post('/ussd/callback', [UssdSessionController::class, 'ussd'])
+//     ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class])
+//     ->name('ussd.callback');
+// Route::get('/ussd/status', function () {
+//     return response()->json([
+//         'status' => 'active',
+//         'message' => 'USSD service is running'
+//     ]);
+// });

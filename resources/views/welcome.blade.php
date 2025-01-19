@@ -36,8 +36,8 @@
     <section id="home" class="relative h-screen pt-16">
         <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-accent/80">
             <!-- Replace with your church image -->
-            <img src="{{ asset('images/pastors.jpg') }}" alt="Church Service" 
-                 class="w-full h-full object-fit mix-blend-overlay"
+            <img src="{{ asset('images/church.png') }}" alt="Church Service" 
+                 class="w-full h-full object-cover mix-blend-overlay"
                  onerror="this.src='https://via.placeholder.com/1920x1080'">
         </div>
         <div class="relative h-full flex items-center justify-center text-center px-4">
