@@ -35,9 +35,12 @@ return [
         ],
     ],
     'sms' => [
-    'username' => env('SMS_USERNAME'),
-    'password' => env('SMS_PASSWORD'),
-    'api_key' => env('SMS_API_KEY'),
-]
+        'username' => env('SMS_USERNAME', 'Blessmore'),
+        'password' => env('SMS_PASSWORD', 'Blessmore'),
+        'shortcode' => env('SMS_SHORTCODE', '2343'),
+        'sender_id' => env('SMS_SENDER_ID', 'REA'),
+        'api_key' => env('SMS_API_KEY', '121231313213123123'),
+        'api_url' => env('SMS_API_URL', 'https://www.cloudservicezm.com/smsservice/httpapi'),
+    ],
 
 ];

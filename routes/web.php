@@ -4,6 +4,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UssdSessionController;
+use App\Http\Controllers\GetInTouchController;
+use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,6 +27,7 @@ Route::middleware(['permission:edit members'])->group(function () {
 // Protect routes with role OR permission middleware
 Route::middleware(['role_or_permission:admin|edit members'])->group(function () {
     // Users with either admin role OR edit members permission can access these routes
+
 });
 
 // Combine multiple middleware
@@ -59,3 +62,8 @@ Route::get('/services/{service}', [ServiceController::class, 'show'])->name('ser
 //         'message' => 'USSD service is running'
 //     ]);
 // });
+
+Route::post('/contact', [GetInTouchController::class, 'store'])->name('contact.submit');
+
+
+Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
