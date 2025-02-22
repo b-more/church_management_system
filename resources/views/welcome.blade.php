@@ -244,7 +244,7 @@
                     @error('phone')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
-                    <p class="mt-1 text-sm text-gray-500">Format: 260 9XXXXXXXX</p>
+                    {{-- <p class="mt-1 text-sm text-gray-500">Format: 260 9XXXXXXXX</p> --}}
                 </div>
 
                 <div>

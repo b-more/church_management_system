@@ -14,7 +14,7 @@ class GalleryController extends Controller
             ->get()
             ->map(function($image) {
                 return [
-                    'image_path' => $image->image_url, // Use the accessor if defined
+                    'image_path' => $image->image_url,
                     'title' => $image->title ?? 'Gallery Image',
                     'alt_text' => $image->alt_text ?? 'Gallery image description',
                     'id' => $image->id
@@ -25,5 +25,6 @@ class GalleryController extends Controller
         \Log::info('Processed images for gallery:', $images->toArray());
 
         return view('gallery.index', compact('images'));
+        // Make sure this matches the path: resources/views/gallery/index.blade.php
     }
 }

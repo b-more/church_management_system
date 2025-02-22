@@ -1,10 +1,7 @@
 import './bootstrap';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import ImageGallery from './components/ImageGallery';
-
-// Keep the Example component import if you're using it elsewhere
-import './components/Example';
+import ImageGallery from './components/ImageGallery.jsx';  // Make sure to include the .jsx extension
 
 // Initialize React Gallery component
 if (document.getElementById('gallery-root')) {
