@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->unsignedBigInteger('period_id')->nullable();
+            $table->decimal('amount', 12, 2)->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

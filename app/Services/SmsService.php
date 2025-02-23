@@ -14,7 +14,7 @@ class SmsService
             'username' => config('services.sms.username', 'Blessmore'),
             'password' => config('services.sms.password', 'Blessmore'),
             'shortcode' => config('services.sms.shortcode', '2343'),
-            'sender_id' => config('services.sms.sender_id', 'REA'),
+            'sender_id' => config('services.sms.sender_id', 'HKC'),
             'api_key' => config('services.sms.api_key', '121231313213123123'),
             'api_url' => config('services.sms.api_url', 'https://www.cloudservicezm.com/smsservice/httpapi'),
         ];

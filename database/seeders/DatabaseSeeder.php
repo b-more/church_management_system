@@ -15,12 +15,17 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RolesAndPermissionsSeeder::class, // Run this first to create roles
-            UserSeeder::class, 
+            UserSeeder::class,
+            TransactionCategorySeeder::class,
+            FinancialPeriodSeeder::class,
+
+            BudgetSeeder::class,
             BranchSeeder::class,                // Then create users with those roles
             CellGroupSeeder::class,
             OfferingTypeSeeder::class,
             PaymentTypeSeeder::class,
             MemberSeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }
