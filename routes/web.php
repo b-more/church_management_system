@@ -5,6 +5,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UssdSessionController;
 use App\Http\Controllers\GetInTouchController;
+use App\Http\Controllers\Reports\FinancialReportController;
 use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,3 +68,15 @@ Route::post('/contact', [GetInTouchController::class, 'store'])->name('contact.s
 
 
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
+
+// Reports Routes
+Route::prefix('reports')->group(function () {
+    Route::get('/financial', [FinancialReportController::class, 'generate'])->name('reports.financial');
+    Route::get('/tithe', [FinancialReportController::class, 'generateTitheReport'])->name('reports.tithe');
+    Route::get('/offering', [FinancialReportController::class, 'generateOfferingReport'])->name('reports.offering');
+});
+
+// Receipt Routes
+Route::get('/receipt/{transaction}', [ReceiptController::class, 'generate'])->name('receipt.generate');
+
+

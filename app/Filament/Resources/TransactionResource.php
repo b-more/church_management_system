@@ -15,6 +15,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Textarea;
+use App\Filament\Actions\GenerateReportAction;
 
 class TransactionResource extends Resource
 {
@@ -95,6 +96,9 @@ class TransactionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                GenerateReportAction::make(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('transaction_date')
                     ->dateTime()
