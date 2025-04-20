@@ -9,6 +9,10 @@ use App\Http\Controllers\Reports\FinancialReportController;
 use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\EventFrontendController;
+use App\Http\Controllers\ReceiptController;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -82,3 +86,10 @@ Route::get('/receipt/{transaction}', [ReceiptController::class, 'generate'])->na
 
 Route::get('/notices', [NoticeController::class, 'index'])->name('notices.index');
 Route::get('/notices/{id}', [NoticeController::class, 'show'])->name('notices.show');
+
+// Public event routes
+Route::get('/events', [App\Http\Controllers\EventFrontendController::class, 'index'])->name('events.index');
+Route::get('/events/{id}', [App\Http\Controllers\EventFrontendController::class, 'show'])->name('events.show');
+Route::get('/events/{id}/register', [App\Http\Controllers\EventFrontendController::class, 'register'])->name('events.register');
+Route::post('/events/{id}/register', [App\Http\Controllers\EventFrontendController::class, 'storeRegistration'])->name('events.registration.store');
+Route::get('/events/{id}/confirmation/{registration}', [App\Http\Controllers\EventFrontendController::class, 'showConfirmation'])->name('events.registration.confirmation');

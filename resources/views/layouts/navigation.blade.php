@@ -23,6 +23,10 @@
                     Services
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
                 </a>
+                <a href="/events" class="text-gray-600 hover:text-primary transition-colors duration-300 font-medium relative group">
+                    Events
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
                 <a href="/gallery" class="text-gray-600 hover:text-primary transition-colors duration-300 font-medium relative group">
                     Gallery
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
@@ -74,6 +78,11 @@
                    class="block px-4 py-3 rounded-lg text-gray-600 hover:bg-primary/10 hover:text-primary
                           transition-all duration-300 font-medium">
                     Services
+                </a>
+                <a href="/events"
+                   class="block px-4 py-3 rounded-lg text-gray-600 hover:bg-primary/10 hover:text-primary
+                          transition-all duration-300 font-medium">
+                    Events
                 </a>
                 <a href="/gallery"
                    class="block px-4 py-3 rounded-lg text-gray-600 hover:bg-primary/10 hover:text-primary

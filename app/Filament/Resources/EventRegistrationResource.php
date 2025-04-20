@@ -3,6 +3,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventRegistrationResource\Pages;
 use App\Models\EventRegistration;
+use App\Services\SmsService;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,6 +16,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Log;
+use Filament\Notifications\Notification;
 
 class EventRegistrationResource extends Resource
 {
@@ -106,6 +109,21 @@ class EventRegistrationResource extends Resource
                     Textarea::make('notes')
                         ->rows(2),
                 ]),
+
+            Section::make('Send SMS Notification')
+                ->description('Send an SMS notification to this registrant')
+                ->schema([
+                    Textarea::make('sms_message')
+                        ->label('SMS Message')
+                        ->rows(3)
+                        ->helperText('This message will be sent via SMS to the registrant')
+                        ->default(function (EventRegistration $record) {
+                            $eventTitle = $record->event->title ?? 'the event';
+                            $memberName = $record->member->first_name ?? 'there';
+                            return "Hi {$memberName}, your registration for {$eventTitle} has been confirmed. Thank you for registering!";
+                        }),
+                ])
+                ->visible(fn ($record) => $record && $record->exists()),
         ]);
     }
 
@@ -121,8 +139,14 @@ class EventRegistrationResource extends Resource
                     ->searchable()
                     ->wrap(),
                 Tables\Columns\TextColumn::make('member.first_name')
+                    ->label('Member')
+                    ->formatStateUsing(fn ($record) =>
+                        $record->member ? $record->member->first_name . ' ' . $record->member->last_name : '-')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('member.phone')
+                    ->label('Phone')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -165,6 +189,65 @@ class EventRegistrationResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('sendSms')
+                    ->label('Send SMS')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->form([
+                        Textarea::make('sms_message')
+                            ->label('SMS Message')
+                            ->required()
+                            ->default(function (EventRegistration $record) {
+                                $eventTitle = $record->event->title ?? 'the event';
+                                $memberName = $record->member->first_name ?? 'there';
+                                return "Hi {$memberName}, your registration for {$eventTitle} has been confirmed. Thank you for registering!";
+                            })
+                            ->rows(3),
+                    ])
+                    ->action(function (EventRegistration $record, array $data): void {
+                        try {
+                            // Get the phone number
+                            $phone = $record->member->phone;
+
+                            if (empty($phone)) {
+                                Notification::make()
+                                    ->title('SMS not sent')
+                                    ->body('No phone number found for this registrant.')
+                                    ->danger()
+                                    ->send();
+                                return;
+                            }
+
+                            // Send SMS
+                            SmsService::send($data['sms_message'], $phone);
+
+                            // Log the action
+                            Log::info('SMS sent to event registrant', [
+                                'registration_id' => $record->id,
+                                'member_id' => $record->member_id,
+                                'sent_by' => auth()->id()
+                            ]);
+
+                            // Show success notification
+                            Notification::make()
+                                ->title('SMS sent successfully')
+                                ->success()
+                                ->send();
+
+                        } catch (\Exception $e) {
+                            Log::error('Failed to send SMS to registrant', [
+                                'registration_id' => $record->id,
+                                'error' => $e->getMessage()
+                            ]);
+
+                            Notification::make()
+                                ->title('Failed to send SMS')
+                                ->body($e->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    })
+                    ->visible(fn (EventRegistration $record) => $record->member && !empty($record->member->phone))
+                    ->modalWidth('lg'),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -172,6 +255,59 @@ class EventRegistrationResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\BulkAction::make('sendBulkSms')
+                        ->label('Send SMS')
+                        ->icon('heroicon-o-paper-airplane')
+                        ->form([
+                            Textarea::make('bulk_sms_message')
+                                ->label('SMS Message')
+                                ->required()
+                                ->default("Thank you for registering for our event. Your registration has been confirmed. We look forward to seeing you there!")
+                                ->rows(3)
+                                ->helperText('This message will be sent to all selected registrants with valid phone numbers.'),
+                        ])
+                        ->action(function ($records, array $data): void {
+                            $successCount = 0;
+                            $failCount = 0;
+
+                            $records->each(function ($record) use ($data, &$successCount, &$failCount) {
+                                try {
+                                    // Get the phone number from the member
+                                    if ($record->member && !empty($record->member->phone)) {
+                                        // Send SMS
+                                        SmsService::send($data['bulk_sms_message'], $record->member->phone);
+
+                                        // Log the action
+                                        Log::info('Bulk SMS sent to event registrant', [
+                                            'registration_id' => $record->id,
+                                            'member_id' => $record->member_id,
+                                            'sent_by' => auth()->id()
+                                        ]);
+
+                                        $successCount++;
+                                    } else {
+                                        $failCount++;
+                                    }
+                                } catch (\Exception $e) {
+                                    Log::error('Failed to send bulk SMS to registrant', [
+                                        'registration_id' => $record->id,
+                                        'error' => $e->getMessage()
+                                    ]);
+
+                                    $failCount++;
+                                }
+                            });
+
+                            // Show summary notification
+                            Notification::make()
+                                ->title('Bulk SMS completed')
+                                ->body("{$successCount} messages sent successfully. {$failCount} failed.")
+                                ->success()
+                                ->send();
+                        })
+                        ->requiresConfirmation()
+                        ->modalHeading('Send SMS to Selected Registrants')
+                        ->modalWidth('lg')
                 ]),
             ])
             ->emptyStateHeading('No Registrations')

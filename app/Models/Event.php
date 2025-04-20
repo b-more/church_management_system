@@ -14,22 +14,24 @@ class Event extends Model
         'department_id',
         'title',
         'description',
-        'event_type',        // Seminar, Conference, Workshop, etc.
+        'image_path',
+        'event_type',
         'start_date',
         'end_date',
         'start_time',
         'end_time',
         'venue',
         'venue_address',
-        'organizer_id',      // Member responsible
-        'coordinator_id',    // Member coordinating
+        'organizer_id',
+        'coordinator_id',
         'budget',
         'expected_attendance',
         'actual_attendance',
         'registration_required',
         'registration_deadline',
-        'status',            // Planned, Ongoing, Completed, Cancelled
-        'notes'
+        'status',
+        'notes',
+        'created_by_id'
     ];
 
     protected $casts = [
@@ -60,5 +62,48 @@ class Event extends Model
     public function coordinator()
     {
         return $this->belongsTo(Member::class, 'coordinator_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by_id');
+    }
+
+    public function registrations()
+    {
+        return $this->hasMany(EventRegistration::class);
+    }
+
+    public function getFormattedDateTimeAttribute()
+    {
+        $startDate = $this->start_date->format('F j, Y');
+        $endDate = $this->end_date->format('F j, Y');
+
+        if($startDate === $endDate) {
+            return $startDate . ' • ' .
+                  date('g:i A', strtotime($this->start_time)) . ' - ' .
+                  date('g:i A', strtotime($this->end_time));
+        }
+
+        return $startDate . ' - ' . $endDate . ' • ' .
+               date('g:i A', strtotime($this->start_time)) . ' - ' .
+               date('g:i A', strtotime($this->end_time));
+    }
+
+    public function getRegistrationCountAttribute()
+    {
+        return $this->registrations()->count();
+    }
+
+    public function getAttendanceCountAttribute()
+    {
+        return $this->registrations()->where('attendance_status', 'Present')->count();
+    }
+
+    public function getRegistrationPercentageAttribute()
+    {
+        if(!$this->expected_attendance) return 0;
+
+        return min(100, round(($this->registration_count / $this->expected_attendance) * 100));
     }
 }

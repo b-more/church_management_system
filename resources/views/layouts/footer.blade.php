@@ -15,6 +15,7 @@
                     <li><a href="/" class="text-white/80 hover:text-[#E0B041] transition-colors">Home</a></li>
                     <li><a href="/about" class="text-white/80 hover:text-[#E0B041] transition-colors">About</a></li>
                     <li><a href="/services" class="text-white/80 hover:text-[#E0B041] transition-colors">Services</a></li>
+                    <li><a href="/events" class="text-white/80 hover:text-[#E0B041] transition-colors">Events</a></li>
                     <li><a href="/gallery" class="text-white/80 hover:text-[#E0B041] transition-colors">Gallery</a></li>
                     <li><a href="/notices" class="text-white/80 hover:text-[#E0B041] transition-colors">Notices</a></li>
                     <li><a href="/contact" class="text-white/80 hover:text-[#E0B041] transition-colors">Contact</a></li>

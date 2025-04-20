@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('department_id')->nullable();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
+            $table->string('image_path')->nullable();
             $table->string('event_type')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
@@ -33,9 +34,10 @@ return new class extends Migration
             $table->dateTime('registration_deadline')->nullable();
             $table->string('status')->default('Planned');
             $table->text('notes')->nullable();
+            $table->unsignedBigInteger('created_by_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
-    
+
             // $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             // $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
             // $table->foreign('organizer_id')->references('id')->on('members')->onDelete('set null');

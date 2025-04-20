@@ -15,6 +15,8 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Facades\Auth;
 
 class EventResource extends Resource
 {
@@ -47,6 +49,14 @@ class EventResource extends Resource
                         TextInput::make('title')->required(),
                         Textarea::make('description')->rows(3),
                     ]),
+                    FileUpload::make('image_path')
+                        ->label('Event Image')
+                        ->image()
+                        ->directory('event-images')
+                        ->maxSize(5120) // 5MB
+                        ->visibility('public')
+                        ->disk('public')
+                        ->columnSpanFull(),
                 ]),
 
             Section::make('Schedule')
@@ -118,6 +128,9 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image_path')
+                    ->circular()
+                    ->defaultImageUrl(fn () => asset('images/event-placeholder.jpg')),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('event_type')
@@ -135,7 +148,10 @@ class EventResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('budget')
                     ->money('zmw'),
-                Tables\Columns\TextColumn::make('actual_attendance'),
+                Tables\Columns\TextColumn::make('registrations_count')
+                    ->label('Registrations')
+                    ->counts('registrations')
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('branch')
@@ -150,7 +166,6 @@ class EventResource extends Resource
         return [
             'index' => Pages\ListEvents::route('/'),
             'create' => Pages\CreateEvent::route('/create'),
-            //'view' => Pages\ViewDepartment::route('/{record}'),
             'edit' => Pages\EditEvent::route('/{record}/edit'),
         ];
     }

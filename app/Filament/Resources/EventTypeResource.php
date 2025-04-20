@@ -41,7 +41,7 @@ class EventTypeResource extends Resource
                             ->maxLength(255)
                             ->placeholder('Enter event type name'),
                         TextInput::make('code')
-                            ->required()
+                            //->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(50)
                             ->placeholder('Enter unique code'),
@@ -51,6 +51,7 @@ class EventTypeResource extends Resource
                             ->options([
                                 'Conference' => 'Conference',
                                 'Seminar' => 'Seminar',
+                                'Summit' => 'Summit',
                                 'Workshop' => 'Workshop',
                                 'Retreat' => 'Retreat',
                                 'Training' => 'Training',
