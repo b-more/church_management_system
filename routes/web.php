@@ -8,6 +8,7 @@ use App\Http\Controllers\GetInTouchController;
 use App\Http\Controllers\Reports\FinancialReportController;
 use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NoticeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -79,4 +80,5 @@ Route::prefix('reports')->group(function () {
 // Receipt Routes
 Route::get('/receipt/{transaction}', [ReceiptController::class, 'generate'])->name('receipt.generate');
 
-
+Route::get('/notices', [NoticeController::class, 'index'])->name('notices.index');
+Route::get('/notices/{id}', [NoticeController::class, 'show'])->name('notices.show');

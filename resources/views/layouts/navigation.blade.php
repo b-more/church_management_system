@@ -27,6 +27,10 @@
                     Gallery
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
                 </a>
+                <a href="/notices" class="text-gray-600 hover:text-primary transition-colors duration-300 font-medium relative group">
+                    Notices
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
                 <a href="/contact" class="text-gray-600 hover:text-primary transition-colors duration-300 font-medium relative group">
                     Contact
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
@@ -75,6 +79,11 @@
                    class="block px-4 py-3 rounded-lg text-gray-600 hover:bg-primary/10 hover:text-primary
                           transition-all duration-300 font-medium">
                     Gallery
+                </a>
+                <a href="/notices"
+                   class="block px-4 py-3 rounded-lg text-gray-600 hover:bg-primary/10 hover:text-primary
+                          transition-all duration-300 font-medium">
+                    Notices
                 </a>
                 <a href="/contact"
                    class="block px-4 py-3 rounded-lg text-gray-600 hover:bg-primary/10 hover:text-primary
