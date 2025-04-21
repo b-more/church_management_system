@@ -153,7 +153,7 @@ class MemberSeeder extends Seeder
                 'notes' => 'Passionate about growing the Women Ministry'
             ],
             [
-                'registration_number' => 'HKC-000004',
+                'registration_number' => 'HKC-000005',
                 'title' => 'Pastor',
                 'first_name' => 'Derrick',
                 'last_name' => 'Banda',
@@ -188,7 +188,7 @@ class MemberSeeder extends Seeder
                 'notes' => 'Senior Pastor with strong leadership abilities'
             ],
             [
-                'registration_number' => 'HKC-000005',
+                'registration_number' => 'HKC-000006',
                 'title' => 'Mr',
                 'first_name' => 'Marshall',
                 'last_name' => 'Chimba',
@@ -223,7 +223,7 @@ class MemberSeeder extends Seeder
                 'notes' => 'Active in church tech team'
             ],
             [
-                'registration_number' => 'HKC-000006',
+                'registration_number' => 'HKC-000007',
                 'title' => 'Mr',
                 'first_name' => 'Wilson',
                 'last_name' => 'Mashowo',
@@ -258,7 +258,7 @@ class MemberSeeder extends Seeder
                 'notes' => 'Helps with church finances'
             ],
             [
-                'registration_number' => 'HKC-000007',
+                'registration_number' => 'HKC-000008',
                 'title' => 'Mr',
                 'first_name' => 'Whiteson',
                 'last_name' => 'Mulenga',
@@ -293,7 +293,7 @@ class MemberSeeder extends Seeder
                 'notes' => 'Active in youth ministry'
             ],
             [
-                'registration_number' => 'HKC-000008',
+                'registration_number' => 'HKC-000009',
                 'title' => 'Mr',
                 'first_name' => 'Nigel',
                 'last_name' => 'Lewanika',
@@ -328,7 +328,7 @@ class MemberSeeder extends Seeder
                 'notes' => 'Helps with church social media'
             ],
             [
-                'registration_number' => 'HKC-000009',
+                'registration_number' => 'HKC-000018',
                 'title' => 'Mr',
                 'first_name' => 'John',
                 'last_name' => 'Banda',
