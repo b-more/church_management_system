@@ -102,7 +102,7 @@
                     <div class="md:col-span-2">
                         <div class="relative h-64 md:h-full rounded-lg overflow-hidden shadow-custom">
                             <div class="absolute inset-0 bg-primary/20"></div>
-                            <img src="/images/church-history.jpg" alt="His Kingdom Church beginnings" class="w-full h-full object-cover">
+                            <img src="/images/pastors.jpg" alt="His Kingdom Church beginnings" class="w-full h-full object-cover">
                             <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/80 to-transparent p-6">
                                 <p class="text-white font-medium">Founded: February 2, 2008</p>
                             </div>

@@ -263,9 +263,31 @@ class ServiceResource extends Resource
                             ->columnSpanFull(),
                         Grid::make(3)
                             ->schema([
-                                Forms\Components\FileUpload::make('audio_recording')
-                                    ->acceptedFileTypes(['audio/mpeg', 'audio/wav'])
-                                    ->directory('service-recordings'),
+                                // Forms\Components\FileUpload::make('audio_recording')
+                                //     ->acceptedFileTypes(['audio/mpeg', 'audio/wav'])
+                                //     ->directory('service-recordings')
+                                //     ->maxSize(50000)
+                                //     ->rules([]),
+
+                                Forms\Components\Select::make('audio_recording')
+                                    ->label('Audio Recording')
+                                    ->options(function () {
+                                        // Get all files from the storage directory
+                                        $files = Storage::disk('public')->files('service-recordings');
+
+                                        // Create an options array with filenames
+                                        $options = [];
+                                        foreach ($files as $file) {
+                                            // Extract just the filename without the path
+                                            $filename = basename($file);
+                                            $options["service-recordings/{$filename}"] = $filename;
+                                        }
+
+                                        return $options;
+                                    })
+                                    ->searchable()
+                                    ->preload()
+                                    ->helperText('Select from pre-uploaded audio files. Upload files manually to storage/app/public/service-recordings/'),
                                 Forms\Components\TextInput::make('facebook_stream_link')
                                     ->url()
                                     ->prefix('https://')
@@ -302,7 +324,7 @@ class ServiceResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-         
+
             ->columns([
                 Tables\Columns\TextColumn::make('branch.name')
                     ->sortable()
@@ -333,23 +355,23 @@ class ServiceResource extends Resource
                     ->label('Preacher')
                     ->formatStateUsing(function ($state, $record) {
                         if (!$record) return 'N/A';
-                        
+
                         if ($record->preacher_type === 'visiting' && $record->visiting_preacher_name) {
-                            return "Visiting: {$record->visiting_preacher_name}" . 
+                            return "Visiting: {$record->visiting_preacher_name}" .
                                    ($record->visiting_preacher_church ? " ({$record->visiting_preacher_church})" : '');
                         }
-                        
+
                         if ($record->preacher_type === 'local' && $record->preacher) {
                             return "Local: {$record->preacher->title} {$record->preacher->first_name} {$record->preacher->last_name}";
                         }
-                        
+
                         return 'Not Assigned';
                     })
                     ->wrap(),
                 // Message Details
                 Tables\Columns\TextColumn::make('message_title')
                 ->label('Message')
-                ->tooltip(fn (Service $record): ?string => 
+                ->tooltip(fn (Service $record): ?string =>
                     $record->bible_reading ? "Scripture: {$record->bible_reading}" : null
                 )
                 ->wrap(),
@@ -357,7 +379,7 @@ class ServiceResource extends Resource
                 Tables\Columns\TextColumn::make('total_attendance')
                     ->numeric()
                     ->sortable()
-                    ->description(fn (Service $record): string => 
+                    ->description(fn (Service $record): string =>
                         "Members: {$record->total_members} | Visitors: {$record->total_visitors} | Children: {$record->total_children}"
                     ),
                 Tables\Columns\TextColumn::make('offering_amount')
@@ -367,7 +389,7 @@ class ServiceResource extends Resource
                 Tables\Columns\IconColumn::make('audio_recording')
                     ->boolean()
                     ->label('Recording')
-                    ->tooltip(fn (Service $record) => 
+                    ->tooltip(fn (Service $record) =>
                         $record->audio_recording ? 'Audio recording available' : 'No audio recording'
                     ),
                 Tables\Columns\TextColumn::make('status')
@@ -441,19 +463,26 @@ class ServiceResource extends Resource
                 ->label('Download Report')
                 ->action(function (Service $record) {
                     $pdf = Pdf::loadView('pdf.service-report', ['service' => $record]);
-                    
+
                     return response()->streamDownload(
                         fn () => print($pdf->output()),
                         "service-report-{$record->date->format('Y-m-d')}.pdf"
                     );
                 }),
                 // Download Audio Action
+                // Tables\Actions\Action::make('download_audio')
+                //     ->icon('heroicon-o-musical-note')
+                //     ->label('Download Audio')
+                //     ->visible(fn (Service $record): bool => $record->audio_recording !== null)
+                //     ->url(fn (Service $record): string => $record->audio_recording ? Storage::url($record->audio_recording) : '')
+                //     ->openUrlInNewTab(),
                 Tables\Actions\Action::make('download_audio')
                     ->icon('heroicon-o-musical-note')
                     ->label('Download Audio')
                     ->visible(fn (Service $record): bool => $record->audio_recording !== null)
                     ->url(fn (Service $record): string => $record->audio_recording ? Storage::url($record->audio_recording) : '')
                     ->openUrlInNewTab(),
+
                 // View Banner Action
                 Tables\Actions\Action::make('view_banner')
                     ->icon('heroicon-o-photo')
@@ -478,8 +507,8 @@ class ServiceResource extends Resource
                 ])
                 ->label('Streams')
                 ->icon('heroicon-m-play')
-                ->visible(fn (Service $record): bool => 
-                    !empty($record->facebook_stream_link) || 
+                ->visible(fn (Service $record): bool =>
+                    !empty($record->facebook_stream_link) ||
                     !empty($record->youtube_stream_link)
                 ),
             ])
