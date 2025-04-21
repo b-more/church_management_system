@@ -23,7 +23,7 @@ class MemberResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $recordTitleAttribute = 'full_name';
     protected static ?string $navigationGroup = 'Church Management';
-    
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
@@ -128,6 +128,8 @@ class MemberResource extends Resource
                                         'Regular Member' => 'Regular Member',
                                         'Kingdom Worker' => 'Kingdom Worker', // Added case
                                         'Leader' => 'Leader',
+                                        'Pastor' => 'Pastor',
+                                        //'Overseer' => 'Overseer',
                                     ])
                                     ->required(),
                                 Forms\Components\DatePicker::make('membership_date')
@@ -267,6 +269,8 @@ class MemberResource extends Resource
                         'First Timer' => 'gray',
                         'New Convert' => 'info',
                         'Regular Member' => 'success',
+                        'Overseer' => 'success',
+                        'Pastor' => 'success',
                         'Kingdom Worker' => 'warning', // Added case
                         'Leader' => 'danger',
                     }),
@@ -306,7 +310,7 @@ class MemberResource extends Resource
                         ->placeholder('Select a member')
                         ->optionsLimit(50)
                         ->searchable(['first_name', 'last_name', 'registration_number'])
-                        ->getOptionLabelFromRecordUsing(fn($record) => 
+                        ->getOptionLabelFromRecordUsing(fn($record) =>
                             "{$record->first_name} {$record->last_name} ({$record->registration_number})")
                     )
                     ->preloadRecordSelect(),
