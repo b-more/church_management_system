@@ -12,8 +12,6 @@ use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\EventFrontendController;
 use App\Http\Controllers\ReceiptController;
 
-
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -71,7 +69,6 @@ Route::get('/services/{service}', [ServiceController::class, 'show'])->name('ser
 
 Route::post('/contact', [GetInTouchController::class, 'store'])->name('contact.submit');
 
-
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
 
 // Reports Routes
@@ -93,3 +90,8 @@ Route::get('/events/{id}', [App\Http\Controllers\EventFrontendController::class,
 Route::get('/events/{id}/register', [App\Http\Controllers\EventFrontendController::class, 'register'])->name('events.register');
 Route::post('/events/{id}/register', [App\Http\Controllers\EventFrontendController::class, 'storeRegistration'])->name('events.registration.store');
 Route::get('/events/{id}/confirmation/{registration}', [App\Http\Controllers\EventFrontendController::class, 'showConfirmation'])->name('events.registration.confirmation');
+
+// Presentation Routes
+Route::get('/presentations/shepherd-heart', function () {
+    return view('presentations.shepherd-heart');
+})->name('presentations.shepherd-heart');
