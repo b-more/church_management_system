@@ -25,7 +25,7 @@ class Member extends Model
         'marital_status',           // Single, Married, Widow
         'occupation',
         'employer',
-        
+
         // Church-specific information
         'membership_date',
         'membership_status',        // Active, Inactive, Transferred, Deceased
@@ -34,13 +34,13 @@ class Member extends Model
         'salvation_date',
         'baptism_date',
         'baptism_type',            // Water, Holy Spirit
-        
+
         // Growth Cycle Tracking
         'membership_class_status',  // Not Started, In Progress, Completed
         'foundation_class_status',
         'leadership_class_status',
         'cell_group_id',
-        
+
         // Additional Information
         'emergency_contact_name',
         'emergency_contact_phone',
@@ -48,7 +48,7 @@ class Member extends Model
         'special_needs',
         'skills_talents',
         'interests',
-        
+
         // Administrative
         'is_active',
         'deactivation_reason',
@@ -99,6 +99,11 @@ class Member extends Model
     public function attendanceRecords()
     {
         return $this->hasMany(AttendanceRecord::class);
+    }
+
+    public function getAgeAttribute()
+    {
+        return $this->date_of_birth ? Carbon::parse($this->date_of_birth)->age : null;
     }
 
     protected static function boot()

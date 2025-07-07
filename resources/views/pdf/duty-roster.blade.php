@@ -127,7 +127,7 @@
 <body>
     <div class="header">
         <div class="logo-container">
-            <img src="{{ public_path('images/logo.png') }}" width="80" height="80">
+            <img src="{{ public_path('images/black_logo.png') }}" width="80" height="80">
         </div>
         <div class="church-info">
             <div class="church-name">{{ $roster->branch->name }}</div>
@@ -227,7 +227,7 @@
     @endif
 
     <div class="footer">
-        Roster Status: {{ ucfirst($roster->status) }} | Generated: {{ now()->format('F j, Y \a\t g:i A') }} 
+        Roster Status: {{ ucfirst($roster->status) }} | Generated: {{ now()->format('F j, Y \a\t g:i A') }}
         | ID: {{ str_pad($roster->id, 6, '0', STR_PAD_LEFT) }}
     </div>
 </body>

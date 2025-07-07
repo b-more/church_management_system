@@ -86,20 +86,28 @@
                 </div>
 
                 <div class="bg-white shadow-custom rounded-lg overflow-hidden p-6">
-                    <!-- Gallery Grid -->
+                    <!-- FIXED Gallery Grid - Face-Focused Display -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         @foreach($images as $index => $image)
-                            <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow-custom h-64 transform transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg">
-                                <!-- Use data attributes to store image info for the modal -->
-                                <img
-                                    src="{{ $image['image_url'] }}"
-                                    alt="{{ $image['alt_text'] ?? 'Gallery image' }}"
-                                    class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
-                                    onclick="openImageModal('{{ $image['image_url'] }}', '{{ $image['title'] ?? 'Gallery image' }}', '{{ $image['alt_text'] ?? '' }}', {{ $index }})"
-                                >
-                                <div class="absolute inset-0 bg-[#011EB7] opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#011EB7]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <h3 class="text-white font-semibold">{{ $image['title'] ?? 'Gallery image' }}</h3>
+                            <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow-custom transform transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg">
+                                <!-- Container with portrait aspect ratio for better face visibility -->
+                                <div class="relative w-full aspect-[4/5] bg-gray-100 rounded-lg overflow-hidden">
+                                    <img
+                                        src="{{ $image['image_url'] }}"
+                                        alt="{{ $image['alt_text'] ?? 'Gallery image' }}"
+                                        class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                                        onclick="openImageModal('{{ $image['image_url'] }}', '{{ $image['title'] ?? 'Gallery image' }}', '{{ $image['alt_text'] ?? '' }}', {{ $index }})"
+                                        style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);"
+                                        loading="lazy"
+                                    >
+                                </div>
+
+                                <!-- Overlay -->
+                                <div class="absolute inset-0 bg-[#011EB7] opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-lg"></div>
+
+                                <!-- Title overlay -->
+                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#011EB7]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-lg">
+                                    <h3 class="text-white font-semibold text-sm">{{ $image['title'] ?? 'Gallery image' }}</h3>
                                 </div>
                             </div>
                         @endforeach
@@ -176,33 +184,49 @@
         </div>
     </div>
 
-    <!-- Simple Modal -->
-    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 hidden z-50" onclick="closeImageModal()">
-        <div class="absolute top-5 right-5">
-            <button onclick="closeImageModal()" class="text-white hover:text-gray-300 focus:outline-none">
+    <!-- FIXED Modal - Shows Full Images Without Cropping -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-95 hidden z-50" onclick="closeImageModal()">
+        <!-- Close Button -->
+        <div class="absolute top-5 right-5 z-20">
+            <button onclick="closeImageModal()" class="text-white hover:text-gray-300 focus:outline-none transition-colors">
                 <i class="fas fa-times text-3xl"></i>
             </button>
         </div>
 
-        <div class="absolute top-1/2 left-5 transform -translate-y-1/2">
-            <button onclick="prevImage()" class="text-white bg-[#011EB7]/50 p-3 rounded-full hover:bg-[#011EB7]/70 focus:outline-none">
+        <!-- Navigation Buttons -->
+        <div class="absolute top-1/2 left-5 transform -translate-y-1/2 z-10">
+            <button onclick="prevImage()" class="text-white bg-[#011EB7]/50 p-3 rounded-full hover:bg-[#011EB7]/70 focus:outline-none transition-colors">
                 <i class="fas fa-chevron-left text-xl"></i>
             </button>
         </div>
 
-        <div class="absolute top-1/2 right-5 transform -translate-y-1/2">
-            <button onclick="nextImage()" class="text-white bg-[#011EB7]/50 p-3 rounded-full hover:bg-[#011EB7]/70 focus:outline-none">
+        <div class="absolute top-1/2 right-5 transform -translate-y-1/2 z-10">
+            <button onclick="nextImage()" class="text-white bg-[#011EB7]/50 p-3 rounded-full hover:bg-[#011EB7]/70 focus:outline-none transition-colors">
                 <i class="fas fa-chevron-right text-xl"></i>
             </button>
         </div>
 
-        <div class="flex items-center justify-center h-full" onclick="event.stopPropagation()">
-            <div class="max-w-4xl mx-auto p-4">
-                <img id="modalImg" src="" alt="Enlarged view" class="max-h-[80vh] max-w-full rounded-lg shadow-2xl">
-                <div class="text-white text-center mt-4">
-                    <h3 id="modalTitle" class="text-xl font-bold"></h3>
-                    <p id="modalDescription" class="text-gray-300 mt-2"></p>
+        <!-- FIXED Modal Content - No Size Restrictions -->
+        <div class="absolute inset-0 overflow-auto pt-16 pb-20" onclick="event.stopPropagation()">
+            <div class="flex items-start justify-center min-h-full p-4 pt-16">
+                <div class="max-w-none">
+                    <!-- FIXED Image - No max-width or max-height constraints -->
+                    <img id="modalImg" src="" alt="Enlarged view"
+                         class="rounded-lg shadow-2xl block mx-auto"
+                         style="margin-top: 40px;">
+                    <div class="text-white text-center mt-6 max-w-2xl mx-auto">
+                        <h3 id="modalTitle" class="text-2xl font-bold mb-2"></h3>
+                        <p id="modalDescription" class="text-gray-300 text-lg"></p>
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="modalLoading" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30 hidden">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-white mb-4"></div>
+                <p class="text-white">Loading image...</p>
             </div>
         </div>
     </div>
@@ -225,39 +249,56 @@
             // Set current index for navigation
             currentImageIndex = index;
 
+            // Show loading spinner
+            document.getElementById('modalLoading').classList.remove('hidden');
+
             // Update modal content
-            document.getElementById('modalImg').src = imageUrl;
+            const modalImg = document.getElementById('modalImg');
+            modalImg.onload = function() {
+                document.getElementById('modalLoading').classList.add('hidden');
+            };
+
+            modalImg.src = imageUrl;
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalDescription').textContent = description;
 
             // Show modal
             document.getElementById('imageModal').classList.remove('hidden');
-            document.getElementById('imageModal').classList.add('flex');
             document.body.style.overflow = 'hidden'; // Prevent scrolling
         }
 
         function closeImageModal() {
             // Hide modal
             document.getElementById('imageModal').classList.add('hidden');
-            document.getElementById('imageModal').classList.remove('flex');
             document.body.style.overflow = 'auto'; // Allow scrolling again
         }
 
         function nextImage() {
             event.stopPropagation();
+            if (allImages.length === 0) return;
             currentImageIndex = (currentImageIndex + 1) % allImages.length;
             updateModalImage();
         }
 
         function prevImage() {
             event.stopPropagation();
+            if (allImages.length === 0) return;
             currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
             updateModalImage();
         }
 
         function updateModalImage() {
             const image = allImages[currentImageIndex];
-            document.getElementById('modalImg').src = image.image_url;
+
+            // Show loading spinner
+            document.getElementById('modalLoading').classList.remove('hidden');
+
+            const modalImg = document.getElementById('modalImg');
+            modalImg.onload = function() {
+                document.getElementById('modalLoading').classList.add('hidden');
+            };
+
+            modalImg.src = image.image_url;
             document.getElementById('modalTitle').textContent = image.title || 'Gallery image';
             document.getElementById('modalDescription').textContent = image.alt_text || '';
         }
@@ -265,7 +306,7 @@
         // Keyboard navigation
         document.addEventListener('keydown', function(event) {
             // Only respond to keyboard if modal is open
-            if (document.getElementById('imageModal').classList.contains('flex')) {
+            if (!document.getElementById('imageModal').classList.contains('hidden')) {
                 if (event.key === 'Escape') {
                     closeImageModal();
                 } else if (event.key === 'ArrowRight') {

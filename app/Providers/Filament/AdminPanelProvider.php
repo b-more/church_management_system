@@ -17,7 +17,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use App\Filament\Widgets\FinanceOverviewStats;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -32,17 +31,14 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::hex('#011EB7'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            // REMOVED: discoverPages - we'll explicitly declare the dashboard
             ->pages([
-                Pages\Dashboard::class,
+                \App\Filament\Pages\ChurchDashboard::class, // Explicit path to your custom dashboard
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                // Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class,
-                FinanceOverviewStats::class,
+                // EMPTY: No default widgets for clean dashboard
             ])
-            //->viteTheme('resources/css/filament/admin/theme.css')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -54,7 +50,6 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-           // ->viteTheme('resources/css/filament/admin/theme.css')
             ->authMiddleware([
                 Authenticate::class,
             ]);

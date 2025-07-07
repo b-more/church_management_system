@@ -22,6 +22,14 @@ class CellGroup extends Model
         'status'
     ];
 
+    protected $casts = [
+        'meeting_time' => 'datetime:H:i', // This will properly cast meeting_time
+        'status' => 'string',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    // Relationships
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
@@ -35,5 +43,25 @@ class CellGroup extends Model
     public function members(): HasMany
     {
         return $this->hasMany(Member::class);
+    }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'Active');
+    }
+
+    // Accessors
+    public function getMeetingTimeFormattedAttribute(): string
+    {
+        if (!$this->meeting_time) {
+            return 'Not Set';
+        }
+
+        try {
+            return $this->meeting_time->format('H:i');
+        } catch (\Exception $e) {
+            return (string) $this->meeting_time;
+        }
     }
 }

@@ -166,18 +166,40 @@ class DutyRosterResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('branch.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('serviceHost.full_name')
-                    ->label('Host'),
-                Tables\Columns\TextColumn::make('worshipLeader.full_name')
-                    ->label('Worship'),
+
+                // Fixed: Use formatStateUsing instead of referencing non-existent full_name column
+                Tables\Columns\TextColumn::make('serviceHost.first_name')
+                    ->label('Host')
+                    ->formatStateUsing(function ($record) {
+                        return $record->serviceHost ?
+                            "{$record->serviceHost->title} {$record->serviceHost->first_name} {$record->serviceHost->last_name}" :
+                            '-';
+                    })
+                    ->searchable(['first_name', 'last_name']) // Search actual database columns
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('worshipLeader.first_name')
+                    ->label('Worship')
+                    ->formatStateUsing(function ($record) {
+                        return $record->worshipLeader ?
+                            "{$record->worshipLeader->title} {$record->worshipLeader->first_name} {$record->worshipLeader->last_name}" :
+                            '-';
+                    })
+                    ->searchable(['first_name', 'last_name']) // Search actual database columns
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('preacher_info')
                     ->label('Preacher')
                     ->formatStateUsing(function ($record) {
                         if ($record->preacher_type === 'visiting') {
                             return "Visiting: {$record->visiting_preacher_name}";
                         }
-                        return optional($record->preacher)->full_name;
-                    }),
+                        return $record->preacher ?
+                            "{$record->preacher->title} {$record->preacher->first_name} {$record->preacher->last_name}" :
+                            '-';
+                    })
+                    ->searchable(['visiting_preacher_name']),
+
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {

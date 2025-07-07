@@ -217,24 +217,42 @@ class EventRegistrationResource extends Resource
                                 return;
                             }
 
-                            // Send SMS
-                            SmsService::send($data['sms_message'], $phone);
+                            // Send SMS and CHECK THE RETURN VALUE
+                            $smsResult = SmsService::send($data['sms_message'], $phone);
 
-                            // Log the action
-                            Log::info('SMS sent to event registrant', [
-                                'registration_id' => $record->id,
-                                'member_id' => $record->member_id,
-                                'sent_by' => auth()->id()
-                            ]);
+                            if ($smsResult) {
+                                // Only log success if SMS actually succeeded
+                                Log::info('SMS sent to event registrant', [
+                                    'registration_id' => $record->id,
+                                    'member_id' => $record->member_id,
+                                    'sent_by' => auth()->id(),
+                                    'phone' => $phone
+                                ]);
 
-                            // Show success notification
-                            Notification::make()
-                                ->title('SMS sent successfully')
-                                ->success()
-                                ->send();
+                                // Show success notification
+                                Notification::make()
+                                    ->title('SMS sent successfully')
+                                    ->body("Message delivered to {$phone}")
+                                    ->success()
+                                    ->send();
+                            } else {
+                                // SMS failed - log error and notify user
+                                Log::error('Failed to send SMS to event registrant', [
+                                    'registration_id' => $record->id,
+                                    'member_id' => $record->member_id,
+                                    'phone' => $phone,
+                                    'message' => $data['sms_message']
+                                ]);
+
+                                Notification::make()
+                                    ->title('Failed to send SMS')
+                                    ->body('SMS could not be delivered. Please check logs for details.')
+                                    ->danger()
+                                    ->send();
+                            }
 
                         } catch (\Exception $e) {
-                            Log::error('Failed to send SMS to registrant', [
+                            Log::error('Exception when sending SMS to event registrant', [
                                 'registration_id' => $record->id,
                                 'error' => $e->getMessage()
                             ]);
@@ -274,22 +292,34 @@ class EventRegistrationResource extends Resource
                                 try {
                                     // Get the phone number from the member
                                     if ($record->member && !empty($record->member->phone)) {
-                                        // Send SMS
-                                        SmsService::send($data['bulk_sms_message'], $record->member->phone);
+                                        // Send SMS and CHECK THE RETURN VALUE
+                                        $smsResult = SmsService::send($data['bulk_sms_message'], $record->member->phone);
 
-                                        // Log the action
-                                        Log::info('Bulk SMS sent to event registrant', [
-                                            'registration_id' => $record->id,
-                                            'member_id' => $record->member_id,
-                                            'sent_by' => auth()->id()
-                                        ]);
+                                        if ($smsResult) {
+                                            // Only log success if SMS actually succeeded
+                                            Log::info('Bulk SMS sent to event registrant', [
+                                                'registration_id' => $record->id,
+                                                'member_id' => $record->member_id,
+                                                'sent_by' => auth()->id(),
+                                                'phone' => $record->member->phone
+                                            ]);
 
-                                        $successCount++;
+                                            $successCount++;
+                                        } else {
+                                            // SMS failed
+                                            Log::error('Failed to send bulk SMS to event registrant', [
+                                                'registration_id' => $record->id,
+                                                'member_id' => $record->member_id,
+                                                'phone' => $record->member->phone
+                                            ]);
+
+                                            $failCount++;
+                                        }
                                     } else {
                                         $failCount++;
                                     }
                                 } catch (\Exception $e) {
-                                    Log::error('Failed to send bulk SMS to registrant', [
+                                    Log::error('Exception during bulk SMS to event registrant', [
                                         'registration_id' => $record->id,
                                         'error' => $e->getMessage()
                                     ]);
@@ -298,12 +328,26 @@ class EventRegistrationResource extends Resource
                                 }
                             });
 
-                            // Show summary notification
-                            Notification::make()
-                                ->title('Bulk SMS completed')
-                                ->body("{$successCount} messages sent successfully. {$failCount} failed.")
-                                ->success()
-                                ->send();
+                            // Show accurate summary notification
+                            if ($successCount > 0 && $failCount == 0) {
+                                Notification::make()
+                                    ->title('Bulk SMS completed successfully')
+                                    ->body("All {$successCount} messages sent successfully.")
+                                    ->success()
+                                    ->send();
+                            } elseif ($successCount > 0 && $failCount > 0) {
+                                Notification::make()
+                                    ->title('Bulk SMS partially completed')
+                                    ->body("{$successCount} messages sent successfully. {$failCount} failed.")
+                                    ->warning()
+                                    ->send();
+                            } else {
+                                Notification::make()
+                                    ->title('Bulk SMS failed')
+                                    ->body("All {$failCount} messages failed to send.")
+                                    ->danger()
+                                    ->send();
+                            }
                         })
                         ->requiresConfirmation()
                         ->modalHeading('Send SMS to Selected Registrants')

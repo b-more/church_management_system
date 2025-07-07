@@ -33,21 +33,39 @@ class EditEventRegistration extends EditRecord
             try {
                 // Make sure we have a member with a phone number
                 if ($record->member && !empty($record->member->phone)) {
-                    // Send the SMS
-                    SmsService::send($data['sms_message'], $record->member->phone);
+                    // Send the SMS and CHECK THE RETURN VALUE
+                    $smsResult = SmsService::send($data['sms_message'], $record->member->phone);
 
-                    // Log the action
-                    Log::info('SMS sent to event registrant after edit', [
-                        'registration_id' => $record->id,
-                        'member_id' => $record->member_id,
-                        'sent_by' => auth()->id()
-                    ]);
+                    if ($smsResult) {
+                        // Only log success if SMS actually succeeded
+                        Log::info('SMS sent to event registrant after edit', [
+                            'registration_id' => $record->id,
+                            'member_id' => $record->member_id,
+                            'sent_by' => auth()->id(),
+                            'phone' => $record->member->phone
+                        ]);
 
-                    // Notify user of success
-                    Notification::make()
-                        ->title('SMS sent successfully')
-                        ->success()
-                        ->send();
+                        // Notify user of success
+                        Notification::make()
+                            ->title('SMS sent successfully')
+                            ->body("Message delivered to {$record->member->phone}")
+                            ->success()
+                            ->send();
+                    } else {
+                        // SMS failed
+                        Log::error('Failed to send SMS to event registrant after edit', [
+                            'registration_id' => $record->id,
+                            'member_id' => $record->member_id,
+                            'phone' => $record->member->phone
+                        ]);
+
+                        // Notify user of the error
+                        Notification::make()
+                            ->title('Failed to send SMS')
+                            ->body('SMS could not be delivered. Please check logs for details.')
+                            ->danger()
+                            ->send();
+                    }
                 } else {
                     // Notify user that the message couldn't be sent
                     Notification::make()
@@ -58,7 +76,7 @@ class EditEventRegistration extends EditRecord
                 }
             } catch (\Exception $e) {
                 // Log the error
-                Log::error('Failed to send SMS to registrant after edit', [
+                Log::error('Exception when sending SMS to event registrant after edit', [
                     'registration_id' => $record->id,
                     'error' => $e->getMessage()
                 ]);
