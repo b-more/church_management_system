@@ -10,10 +10,10 @@ class ListMembers extends ListRecords
 {
     protected static string $resource = MemberResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    protected function getHeaderWidgets(): array
+{
+    return [
+        \App\Filament\Widgets\MinistryStatsWidget::class,
+    ];
+}
 }

@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Member;
 use App\Models\Transaction;
+use App\Models\DutyRoster;
 use App\Models\AttendanceRecord;
 use App\Models\Event;
 use App\Models\CellGroup;
@@ -72,6 +73,7 @@ class ChurchDashboard extends Page implements HasForms, HasTable
         $this->monthly_income = $this->getMonthlyIncome();
         $this->monthly_expenses = $this->getMonthlyExpenses();
 
+
         // Member Metrics
         $this->total_members = $this->getTotalMembers();
         $this->active_members = $this->getActiveMembers();
@@ -89,6 +91,10 @@ class ChurchDashboard extends Page implements HasForms, HasTable
         $this->events_this_week = $this->getEventsThisWeek();
         $this->active_cell_groups = $this->getActiveCellGroups();
         $this->total_branches = $this->getTotalBranches();
+
+        // Sunday Duty Roster
+        $this->sunday_duty_roster = $this->getNextSundayDutyRoster();
+        $this->next_sunday_date = $this->getNextSundayDate();
     }
 
     // Financial Methods
@@ -124,6 +130,26 @@ class ChurchDashboard extends Page implements HasForms, HasTable
             ->where('transaction_type', 'expense')
             ->sum('amount');
         return "ZMW " . number_format($amount, 2);
+    }
+
+    // Sunday Duty Roster Methods
+    public function getNextSundayDate()
+    {
+        $nextSunday = now()->next(Carbon::SUNDAY);
+        return $nextSunday->format('F j, Y');
+    }
+
+    public function getNextSundayDutyRoster()
+    {
+        $nextSunday = now()->next(Carbon::SUNDAY);
+
+        return \App\Models\DutyRoster::with([
+            'serviceHost', 'intercessionLeader', 'worshipLeader',
+            'announcer', 'exhortationLeader', 'sundaySchoolTeacher', 'preacher', 'branch'
+        ])
+        ->whereDate('service_date', $nextSunday->toDateString())
+        ->where('status', 'published')
+        ->first();
     }
 
     // Member Methods
@@ -330,4 +356,6 @@ class ChurchDashboard extends Page implements HasForms, HasTable
     public $events_this_week;
     public $active_cell_groups;
     public $total_branches;
+    public $sunday_duty_roster;
+    public $next_sunday_date;
 }

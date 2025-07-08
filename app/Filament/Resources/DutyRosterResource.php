@@ -39,18 +39,30 @@ class DutyRosterResource extends Resource
                             Forms\Components\Select::make('branch_id')
                                 ->label('Branch')
                                 ->relationship('branch', 'name')
-                                ->required(),
+                                ->required()
+                                ->default(function () {
+                                    // Get the branch ID for "Internal Prayer Center"
+                                    return \App\Models\Branch::where('name', 'Internal Prayer Center')->first()?->id;
+                                }),
                             Forms\Components\Select::make('service_type')
                                 ->required()
                                 ->options([
+                                    'Sunday Main Service' => 'Sunday Main Service',
                                     'Sunday Service' => 'Sunday Service',
                                     'Midweek Service' => 'Midweek Service',
                                     'Special Service' => 'Special Service',
-                                ]),
+                                ])
+                                ->default('Sunday Main Service'),
                             Forms\Components\DatePicker::make('service_date')
-                                ->required(),
+                                ->required()
+                                ->default(now()),
                             Forms\Components\TimePicker::make('service_time')
-                                ->required(),
+                                ->required()
+                                ->default('09:30'),
+                            Forms\Components\TimePicker::make('end_time')
+                                ->label('End Time')
+                                ->required()
+                                ->default('12:30'),
                         ]),
                     ]),
 
@@ -60,52 +72,91 @@ class DutyRosterResource extends Resource
                         Grid::make(2)->schema([
                             Forms\Components\Select::make('service_host_id')
                                 ->label('Service Host')
-                                ->relationship('serviceHost', 'first_name', fn (Builder $query) => $query->orderBy('first_name'))
-                                ->getOptionLabelFromRecordUsing(fn (Member $record) => "{$record->title} {$record->first_name} {$record->last_name}")
-                                ->searchable()
+                                ->options(function () {
+                                    return Member::where('is_active', true)
+                                        ->where('is_eligible_for_pulpit_ministry', true) // Assuming ushers can be hosts
+                                        ->orderBy('first_name')
+                                        ->get()
+                                        ->mapWithKeys(function ($member) {
+                                            return [$member->id => "{$member->title} {$member->first_name} {$member->last_name}"];
+                                        });
+                                })
                                 ->preload(),
 
                             Forms\Components\Select::make('intercession_leader_id')
                                 ->label('Intercession Leader')
-                                ->relationship('intercessionLeader', 'first_name', fn (Builder $query) => $query->orderBy('first_name'))
-                                ->getOptionLabelFromRecordUsing(fn (Member $record) => "{$record->title} {$record->first_name} {$record->last_name}")
-                                ->searchable()
+                                ->options(function () {
+                                    return Member::where('is_active', true)
+                                        ->where('is_intercessor', true)
+                                        ->orderBy('first_name')
+                                        ->get()
+                                        ->mapWithKeys(function ($member) {
+                                            return [$member->id => "{$member->title} {$member->first_name} {$member->last_name}"];
+                                        });
+                                })
                                 ->preload(),
 
                             Forms\Components\Select::make('worship_leader_id')
                                 ->label('Worship Leader')
-                                ->relationship('worshipLeader', 'first_name', fn (Builder $query) => $query->orderBy('first_name'))
-                                ->getOptionLabelFromRecordUsing(fn (Member $record) => "{$record->title} {$record->first_name} {$record->last_name}")
-                                ->searchable()
+                                ->options(function () {
+                                    return Member::where('is_active', true)
+                                        ->where('is_worship_leader', true)
+                                        ->orderBy('first_name')
+                                        ->get()
+                                        ->mapWithKeys(function ($member) {
+                                            return [$member->id => "{$member->title} {$member->first_name} {$member->last_name}"];
+                                        });
+                                })
                                 ->preload(),
 
                             Forms\Components\Select::make('announcer_id')
                                 ->label('Announcer')
-                                ->relationship('announcer', 'first_name', fn (Builder $query) => $query->orderBy('first_name'))
-                                ->getOptionLabelFromRecordUsing(fn (Member $record) => "{$record->title} {$record->first_name} {$record->last_name}")
-                                ->searchable()
+                                ->options(function () {
+                                    return Member::where('is_active', true)
+                                        ->where('is_usher', true) // Assuming ushers can be announcers
+                                        ->orderBy('first_name')
+                                        ->get()
+                                        ->mapWithKeys(function ($member) {
+                                            return [$member->id => "{$member->title} {$member->first_name} {$member->last_name}"];
+                                        });
+                                })
                                 ->preload(),
 
                             Forms\Components\Select::make('exhortation_leader_id')
                                 ->label('Exhortation Leader')
-                                ->relationship('exhortationLeader', 'first_name', fn (Builder $query) => $query->orderBy('first_name'))
-                                ->getOptionLabelFromRecordUsing(fn (Member $record) => "{$record->title} {$record->first_name} {$record->last_name}")
-                                ->searchable()
+                                ->options(function () {
+                                    return Member::where('is_active', true)
+                                        ->where('is_offering_exhortation_leader', true)
+                                        ->orderBy('first_name')
+                                        ->get()
+                                        ->mapWithKeys(function ($member) {
+                                            return [$member->id => "{$member->title} {$member->first_name} {$member->last_name}"];
+                                        });
+                                })
                                 ->preload(),
 
                             Forms\Components\Select::make('sunday_school_teacher_id')
                                 ->label('Sunday School Teacher')
-                                ->relationship('sundaySchoolTeacher', 'first_name', fn (Builder $query) => $query->orderBy('first_name'))
-                                ->getOptionLabelFromRecordUsing(fn (Member $record) => "{$record->title} {$record->first_name} {$record->last_name}")
-                                ->searchable()
+                                ->options(function () {
+                                    return Member::where('is_active', true)
+                                        ->where('is_sunday_school_teacher', true)
+                                        ->orderBy('first_name')
+                                        ->get()
+                                        ->mapWithKeys(function ($member) {
+                                            return [$member->id => "{$member->title} {$member->first_name} {$member->last_name}"];
+                                        });
+                                })
                                 ->preload(),
 
-                            Forms\Components\Select::make('special_song_singer_id')
-                                ->label('Special Song Singer')
-                                ->relationship('specialSongSinger', 'first_name', fn (Builder $query) => $query->orderBy('first_name'))
-                                ->getOptionLabelFromRecordUsing(fn (Member $record) => "{$record->title} {$record->first_name} {$record->last_name}")
-                                ->searchable()
-                                ->preload(),
+                            Forms\Components\Select::make('special_song_group')
+                                ->label('Special Song Group')
+                                ->options([
+                                    'Men of Courage' => 'Men of Courage',
+                                    'Royal Women' => 'Royal Women',
+                                    'Transformed Youths' => 'Transformed Youths',
+                                    "King's Kids" => "King's Kids",
+                                    'Heart of Worship' => 'Heart of Worship',
+                                ]),
                         ]),
                     ]),
 
@@ -117,13 +168,20 @@ class DutyRosterResource extends Resource
                                 'visiting' => 'Visiting Preacher',
                             ])
                             ->required()
+                            ->default('local')
                             ->live(),
 
                         Forms\Components\Select::make('preacher_id')
                             ->label('Local Preacher')
-                            ->relationship('preacher', 'first_name', fn (Builder $query) => $query->orderBy('first_name'))
-                            ->getOptionLabelFromRecordUsing(fn (Member $record) => "{$record->title} {$record->first_name} {$record->last_name}")
-                            ->searchable()
+                            ->options(function () {
+                                return Member::where('is_active', true)
+                                    ->where('is_pastor', true)
+                                    ->orderBy('first_name')
+                                    ->get()
+                                    ->mapWithKeys(function ($member) {
+                                        return [$member->id => "{$member->title} {$member->first_name} {$member->last_name}"];
+                                    });
+                            })
                             ->preload()
                             ->visible(fn (Get $get) => $get('preacher_type') === 'local'),
 
@@ -160,14 +218,24 @@ class DutyRosterResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('service_type')
-                    ->searchable(),
+                    ->searchable()
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Sunday Main Service' => 'success',
+                        'Sunday Service' => 'success',
+                        'Midweek Service' => 'info',
+                        'Special Service' => 'warning',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('service_time')
+                    ->time()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_time')
                     ->time()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('branch.name')
                     ->sortable(),
 
-                // Fixed: Use formatStateUsing instead of referencing non-existent full_name column
                 Tables\Columns\TextColumn::make('serviceHost.first_name')
                     ->label('Host')
                     ->formatStateUsing(function ($record) {
@@ -175,7 +243,7 @@ class DutyRosterResource extends Resource
                             "{$record->serviceHost->title} {$record->serviceHost->first_name} {$record->serviceHost->last_name}" :
                             '-';
                     })
-                    ->searchable(['first_name', 'last_name']) // Search actual database columns
+                    ->searchable(['first_name', 'last_name'])
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('worshipLeader.first_name')
@@ -185,8 +253,20 @@ class DutyRosterResource extends Resource
                             "{$record->worshipLeader->title} {$record->worshipLeader->first_name} {$record->worshipLeader->last_name}" :
                             '-';
                     })
-                    ->searchable(['first_name', 'last_name']) // Search actual database columns
+                    ->searchable(['first_name', 'last_name'])
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('special_song_group')
+                    ->label('Special Song')
+                    ->badge()
+                    ->color(fn (?string $state): string => match ($state) {
+                        'Men of Courage' => 'blue',
+                        'Royal Women' => 'pink',
+                        'Transformed Youths' => 'green',
+                        "King's Kids" => 'orange',
+                        'Heart of Worship' => 'purple',
+                        default => 'gray',
+                    }),
 
                 Tables\Columns\TextColumn::make('preacher_info')
                     ->label('Preacher')
@@ -211,6 +291,14 @@ class DutyRosterResource extends Resource
                 SelectFilter::make('branch')
                     ->relationship('branch', 'name'),
                 SelectFilter::make('service_type'),
+                SelectFilter::make('special_song_group')
+                    ->options([
+                        'Men of Courage' => 'Men of Courage',
+                        'Royal Women' => 'Royal Women',
+                        'Transformed Youths' => 'Transformed Youths',
+                        "King's Kids" => "King's Kids",
+                        'Heart of Worship' => 'Heart of Worship',
+                    ]),
                 Filter::make('service_date')
                     ->form([
                         Forms\Components\DatePicker::make('from'),

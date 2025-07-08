@@ -13,26 +13,29 @@ return new class extends Migration
     {
         Schema::create('duty_rosters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('branch_id')->constrained()->cascadeOnDelete();
-            $table->date('service_date');
-            $table->string('service_type');
-            $table->time('service_time');
-            
+            $table->UnsignedBigInteger('branch_id')->nullable();
+            $table->date('service_date')->nullable();
+            $table->string('service_type')->nullable();
+            $table->time('service_time')->nullable();
+
             // Service Leaders
-            $table->foreignId('service_host_id')->nullable()->constrained('members')->nullOnDelete();
-            $table->foreignId('intercession_leader_id')->nullable()->constrained('members')->nullOnDelete();
-            $table->foreignId('worship_leader_id')->nullable()->constrained('members')->nullOnDelete();
-            $table->foreignId('announcer_id')->nullable()->constrained('members')->nullOnDelete();
-            $table->foreignId('exhortation_leader_id')->nullable()->constrained('members')->nullOnDelete();
-            $table->foreignId('sunday_school_teacher_id')->nullable()->constrained('members')->nullOnDelete();
-            $table->foreignId('special_song_singer_id')->nullable()->constrained('members')->nullOnDelete();
-            
+            $table->UnsignedBigInteger('service_host_id')->nullable()->constrained('members')->nullOnDelete();
+            $table->UnsignedBigInteger('intercession_leader_id')->nullable()->constrained('members')->nullOnDelete();
+            $table->UnsignedBigInteger('worship_leader_id')->nullable()->constrained('members')->nullOnDelete();
+            $table->UnsignedBigInteger('announcer_id')->nullable()->constrained('members')->nullOnDelete();
+            $table->UnsignedBigInteger('exhortation_leader_id')->nullable()->constrained('members')->nullOnDelete();
+            $table->UnsignedBigInteger('sunday_school_teacher_id')->nullable()->constrained('members')->nullOnDelete();
+            $table->UnsignedBigInteger('special_song_singer_id')->nullable()->constrained('members')->nullOnDelete();
+            $table->string('special_song_group')->nullable();
+            $table->time('end_time')->nullable();
+
+
             // Preacher Information
             $table->enum('preacher_type', ['local', 'visiting'])->default('local');
-            $table->foreignId('preacher_id')->nullable()->constrained('members')->nullOnDelete();
+            $table->UnsignedBigInteger('preacher_id')->nullable()->constrained('members')->nullOnDelete();
             $table->string('visiting_preacher_name')->nullable();
             $table->string('visiting_preacher_church')->nullable();
-            
+
             $table->text('notes')->nullable();
             $table->string('status')->default('draft'); // draft, published
             $table->timestamps();

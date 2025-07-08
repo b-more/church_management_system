@@ -61,7 +61,7 @@ class AttendanceStatisticResource extends Resource
                             ->relationship('branch', 'name')
                             ->required()
                             ->searchable(),
-                            
+
                         Forms\Components\TextInput::make('service_name')
                             ->required()
                             ->maxLength(255),
@@ -163,7 +163,7 @@ class AttendanceStatisticResource extends Resource
 
                 Tables\Columns\TextColumn::make('attendance_breakdown')
                     ->label('Breakdown')
-                    ->description(fn (AttendanceStatistic $record): string => 
+                    ->description(fn (AttendanceStatistic $record): string =>
                         "Members: {$record->total_members} | Visitors: {$record->total_visitors} | First Timers: {$record->total_first_timers}"
                     ),
 
@@ -255,7 +255,7 @@ class AttendanceStatisticResource extends Resource
         return [
             'index' => Pages\ListAttendanceStatistics::route('/'),
             'create' => Pages\CreateAttendanceStatistic::route('/create'),
-            'view' => Pages\ViewAttendanceStatistic::route('/{record}'),
+            //'view' => Pages\ViewAttendanceStatistic::route('/{record}'),
             'edit' => Pages\EditAttendanceStatistic::route('/{record}/edit'),
         ];
     }

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('marital_status');
             $table->string('occupation')->nullable();
             $table->string('employer')->nullable();
-            
+
             // Church-specific information
             $table->date('membership_date');
             $table->string('membership_status')->default('Active');
@@ -36,13 +36,13 @@ return new class extends Migration
             $table->date('salvation_date')->nullable();
             $table->date('baptism_date')->nullable();
             $table->string('baptism_type')->nullable();
-            
+
             // Growth Cycle Tracking
             $table->string('membership_class_status')->default('Not Started');
             $table->string('foundation_class_status')->default('Not Started');
             $table->string('leadership_class_status')->default('Not Started');
             $table->unsignedBigInteger('cell_group_id')->nullable();
-            
+
             // Additional Information
             $table->string('emergency_contact_name')->nullable();
             $table->string('emergency_contact_phone')->nullable();
@@ -50,19 +50,33 @@ return new class extends Migration
             $table->text('special_needs')->nullable();
             $table->text('skills_talents')->nullable();
             $table->text('interests')->nullable();
-            
+
             // Administrative
             $table->boolean('is_active')->default(true);
+            $table->boolean('is_pastor')->default(false);
+            $table->boolean('is_intercessor')->default(false);
+            $table->boolean('is_usher')->default(false);
+            $table->boolean('is_worship_leader')->default(false);
+            $table->boolean('is_sunday_school_teacher')->default(false);
+            $table->boolean('is_offering_exhortation_leader')->default(false);
+            $table->boolean('is_eligible_for_pulpit_ministry')->default(false);
             $table->string('deactivation_reason')->nullable();
             $table->text('notes')->nullable();
-            
+
             $table->timestamps();
             $table->softDeletes();
-            
+
             // Indexes
             $table->index(['first_name', 'last_name']);
             $table->index('phone');
             $table->index('membership_status');
+              $table->index('is_pastor');
+            $table->index('is_intercessor');
+            $table->index('is_usher');
+            $table->index('is_worship_leader');
+            $table->index('is_sunday_school_teacher');
+            $table->index('is_offering_exhortation_leader');
+            $table->index('is_eligible_for_pulpit_ministry');
         });
     }
 

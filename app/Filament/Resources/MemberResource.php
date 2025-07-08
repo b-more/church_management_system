@@ -133,6 +133,7 @@ class MemberResource extends Resource
                                         'Kingdom Worker' => 'Kingdom Worker',
                                         'Leader' => 'Leader',
                                         'Pastor' => 'Pastor',
+                                        'Overseer' => 'Overseer',
                                     ])
                                     ->required(),
                                 Forms\Components\DatePicker::make('membership_date')
@@ -234,6 +235,34 @@ class MemberResource extends Resource
                             ->rows(3),
                     ]),
 
+                Section::make('Ministry Roles')
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                Forms\Components\Toggle::make('is_pastor')
+                                    ->label('Pastor')
+                                    ->default(false),
+                                Forms\Components\Toggle::make('is_intercessor')
+                                    ->label('Intercessor')
+                                    ->default(false),
+                                Forms\Components\Toggle::make('is_usher')
+                                    ->label('Usher')
+                                    ->default(false),
+                                Forms\Components\Toggle::make('is_worship_leader')
+                                    ->label('Worship Leader')
+                                    ->default(false),
+                                Forms\Components\Toggle::make('is_sunday_school_teacher')
+                                    ->label('Sunday School Teacher')
+                                    ->default(false),
+                                Forms\Components\Toggle::make('is_offering_exhortation_leader')
+                                    ->label('Offering/Exhortation Leader')
+                                    ->default(false),
+                                Forms\Components\Toggle::make('is_eligible_for_pulpit_ministry')
+                                    ->label('Eligible for Pulpit Ministry')
+                                    ->default(false),
+                            ]),
+                    ]),
+
                 Section::make('Status')
                     ->schema([
                         Grid::make(2)
@@ -279,6 +308,7 @@ class MemberResource extends Resource
                         'Pastor' => 'success',
                         'Kingdom Worker' => 'warning',
                         'Leader' => 'danger',
+                        'Overseer' => 'danger',
                         default => 'gray',
                     }),
                 Tables\Columns\IconColumn::make('is_active')
@@ -296,6 +326,30 @@ class MemberResource extends Resource
                 Tables\Columns\TextColumn::make('gender')
                     ->sortable()
                     ->badge(),
+
+                // Ministry Roles Toggle Columns
+                Tables\Columns\ToggleColumn::make('is_pastor')
+                    ->label('Pastor')
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_intercessor')
+                    ->label('Intercessor')
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_usher')
+                    ->label('Usher')
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_worship_leader')
+                    ->label('Worship')
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_sunday_school_teacher')
+                    ->label('S.School')
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_offering_exhortation_leader')
+                    ->label('Offering')
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_eligible_for_pulpit_ministry')
+                    ->label('Pulpit')
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('age')
                     ->getStateUsing(fn ($record) => $record->date_of_birth ? Carbon::parse($record->date_of_birth)->age : null)
                     ->sortable(query: function (Builder $query, string $direction): Builder {
@@ -337,6 +391,7 @@ class MemberResource extends Resource
                         'Kingdom Worker' => 'Kingdom Worker',
                         'Leader' => 'Leader',
                         'Pastor' => 'Pastor',
+                        'Overseer' => 'Overseer',
                     ]),
 
                 // Personal Information Filters
@@ -487,6 +542,42 @@ class MemberResource extends Resource
                     ->query(fn (Builder $query): Builder => $query->whereNotNull('emergency_contact_name'))
                     ->toggle(),
 
+                // Ministry Roles Filters
+                Filter::make('is_pastor')
+                    ->label('Is Pastor')
+                    ->query(fn (Builder $query): Builder => $query->where('is_pastor', true))
+                    ->toggle(),
+
+                Filter::make('is_intercessor')
+                    ->label('Is Intercessor')
+                    ->query(fn (Builder $query): Builder => $query->where('is_intercessor', true))
+                    ->toggle(),
+
+                Filter::make('is_usher')
+                    ->label('Is Usher')
+                    ->query(fn (Builder $query): Builder => $query->where('is_usher', true))
+                    ->toggle(),
+
+                Filter::make('is_worship_leader')
+                    ->label('Is Worship Leader')
+                    ->query(fn (Builder $query): Builder => $query->where('is_worship_leader', true))
+                    ->toggle(),
+
+                Filter::make('is_sunday_school_teacher')
+                    ->label('Is Sunday School Teacher')
+                    ->query(fn (Builder $query): Builder => $query->where('is_sunday_school_teacher', true))
+                    ->toggle(),
+
+                Filter::make('is_offering_exhortation_leader')
+                    ->label('Is Offering/Exhortation Leader')
+                    ->query(fn (Builder $query): Builder => $query->where('is_offering_exhortation_leader', true))
+                    ->toggle(),
+
+                Filter::make('is_eligible_for_pulpit_ministry')
+                    ->label('Eligible for Pulpit Ministry')
+                    ->query(fn (Builder $query): Builder => $query->where('is_eligible_for_pulpit_ministry', true))
+                    ->toggle(),
+
                 // Text Search Filters
                 Filter::make('search_occupation')
                     ->form([
@@ -609,11 +700,16 @@ class MemberResource extends Resource
                                 break;
 
                             case 'certificates':
-                                $pdf = $pdfService->generateMemberCertificates($members, [
-                                    'certificate_type' => $data['certificate_type'] ?? 'membership',
-                                    'pastor_name' => $data['pastor_name'] ?? 'Apostle Chris Siame',
-                                ]);
-                                $filename = ($data['certificate_type'] ?? 'membership') . '-certificates-' . now()->format('Y-m-d') . '.pdf';
+                                try {
+                                    $pdf = $pdfService->generateMemberCertificates($members, [
+                                        'certificate_type' => $data['certificate_type'] ?? 'membership',
+                                        'pastor_name' => $data['pastor_name'] ?? 'Apostle Chris Siame',
+                                    ]);
+                                    $filename = ($data['certificate_type'] ?? 'membership') . '-certificates-' . now()->format('Y-m-d') . '.pdf';
+                                } catch (\Exception $e) {
+                                    \Log::error('Certificate generation failed: ' . $e->getMessage());
+                                    throw new \Exception('Failed to generate certificates: ' . $e->getMessage());
+                                }
                                 break;
 
                             default: // list
@@ -767,6 +863,13 @@ class MemberResource extends Resource
             'Is Active',
             'Deactivation Reason',
             'Notes',
+            'Is Pastor',
+            'Is Intercessor',
+            'Is Usher',
+            'Is Worship Leader',
+            'Is Sunday School Teacher',
+            'Is Offering/Exhortation Leader',
+            'Is Eligible for Pulpit Ministry',
             'Created At',
             'Updated At',
         ];
@@ -810,6 +913,13 @@ class MemberResource extends Resource
                 $member->is_active ? 'Yes' : 'No',
                 $member->deactivation_reason ?? '',
                 $member->notes ?? '',
+                $member->is_pastor ? 'Yes' : 'No',
+                $member->is_intercessor ? 'Yes' : 'No',
+                $member->is_usher ? 'Yes' : 'No',
+                $member->is_worship_leader ? 'Yes' : 'No',
+                $member->is_sunday_school_teacher ? 'Yes' : 'No',
+                $member->is_offering_exhortation_leader ? 'Yes' : 'No',
+                $member->is_eligible_for_pulpit_ministry ? 'Yes' : 'No',
                 $member->created_at ? $member->created_at->format('Y-m-d H:i:s') : '',
                 $member->updated_at ? $member->updated_at->format('Y-m-d H:i:s') : '',
             ];
