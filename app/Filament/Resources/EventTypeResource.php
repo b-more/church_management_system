@@ -20,8 +20,8 @@ class EventTypeResource extends Resource
 {
     protected static ?string $model = EventType::class;
     protected static ?string $navigationIcon = 'heroicon-o-tag';
-    protected static ?string $navigationGroup = 'Event Management';
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Configuration';
+    protected static ?int $navigationSort = 24;
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getNavigationBadge(): ?string

@@ -4,11 +4,11 @@ namespace App\Filament\Pages;
 
 use App\Models\Member;
 use App\Models\Transaction;
-use App\Models\DutyRoster;
 use App\Models\AttendanceRecord;
 use App\Models\Event;
 use App\Models\CellGroup;
 use App\Models\Branch;
+use App\Models\DutyRoster; // Add this import
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
@@ -73,7 +73,6 @@ class ChurchDashboard extends Page implements HasForms, HasTable
         $this->monthly_income = $this->getMonthlyIncome();
         $this->monthly_expenses = $this->getMonthlyExpenses();
 
-
         // Member Metrics
         $this->total_members = $this->getTotalMembers();
         $this->active_members = $this->getActiveMembers();
@@ -92,7 +91,7 @@ class ChurchDashboard extends Page implements HasForms, HasTable
         $this->active_cell_groups = $this->getActiveCellGroups();
         $this->total_branches = $this->getTotalBranches();
 
-        // Sunday Duty Roster
+        // Sunday Duty Roster - Add these lines
         $this->sunday_duty_roster = $this->getNextSundayDutyRoster();
         $this->next_sunday_date = $this->getNextSundayDate();
     }
@@ -130,26 +129,6 @@ class ChurchDashboard extends Page implements HasForms, HasTable
             ->where('transaction_type', 'expense')
             ->sum('amount');
         return "ZMW " . number_format($amount, 2);
-    }
-
-    // Sunday Duty Roster Methods
-    public function getNextSundayDate()
-    {
-        $nextSunday = now()->next(Carbon::SUNDAY);
-        return $nextSunday->format('F j, Y');
-    }
-
-    public function getNextSundayDutyRoster()
-    {
-        $nextSunday = now()->next(Carbon::SUNDAY);
-
-        return \App\Models\DutyRoster::with([
-            'serviceHost', 'intercessionLeader', 'worshipLeader',
-            'announcer', 'exhortationLeader', 'sundaySchoolTeacher', 'preacher', 'branch'
-        ])
-        ->whereDate('service_date', $nextSunday->toDateString())
-        ->where('status', 'published')
-        ->first();
     }
 
     // Member Methods
@@ -232,6 +211,32 @@ class ChurchDashboard extends Page implements HasForms, HasTable
     public function getTotalBranches()
     {
         return Branch::count();
+    }
+
+    // Sunday Duty Roster Methods - Add these methods
+    public function getNextSundayDate()
+    {
+        $nextSunday = now()->next(Carbon::SUNDAY);
+        return $nextSunday->format('F j, Y');
+    }
+
+    public function getNextSundayDutyRoster()
+    {
+        try {
+            $nextSunday = now()->next(Carbon::SUNDAY);
+
+            return DutyRoster::with([
+                'serviceHost', 'intercessionLeader', 'worshipLeader',
+                'announcer', 'exhortationLeader', 'sundaySchoolTeacher', 'preacher', 'branch'
+            ])
+            ->whereDate('service_date', $nextSunday->toDateString())
+            ->where('status', 'published')
+            ->first();
+        } catch (\Exception $e) {
+            // Log the error and return null if there's an issue
+            \Log::error('Error fetching Sunday duty roster: ' . $e->getMessage());
+            return null;
+        }
     }
 
     // Table for Recent Transactions
@@ -356,6 +361,6 @@ class ChurchDashboard extends Page implements HasForms, HasTable
     public $events_this_week;
     public $active_cell_groups;
     public $total_branches;
-    public $sunday_duty_roster;
-    public $next_sunday_date;
+    public $sunday_duty_roster; // Add this property
+    public $next_sunday_date;   // Add this property
 }

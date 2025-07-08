@@ -30,10 +30,19 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex('#011EB7'),
             ])
+            // Add manual registration to test
+            ->resources([
+                \App\Filament\Resources\IncomeResource::class,
+                \App\Filament\Resources\ProjectCategoryResource::class,
+                \App\Filament\Resources\ProjectResource::class,
+                \App\Filament\Resources\PartnershipResource::class,
+                \App\Filament\Resources\PledgeResource::class,
+            ])
+            // Keep auto-discovery as well
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            // REMOVED: discoverPages - we'll explicitly declare the dashboard
+
             ->pages([
-                \App\Filament\Pages\ChurchDashboard::class, // Explicit path to your custom dashboard
+                \App\Filament\Pages\ChurchDashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([

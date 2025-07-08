@@ -22,9 +22,9 @@ class CellGroupResource extends Resource
 {
     protected static ?string $model = CellGroup::class;
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
-    protected static ?string $navigationGroup = 'Church Management';
+    protected static ?string $navigationGroup = 'Configuration';
+    protected static ?int $navigationSort = 22;
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?int $navigationSort = 3;
 
     public static function getNavigationBadge(): ?string
     {
@@ -116,7 +116,7 @@ class CellGroupResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('leader.first_name')
                     ->label('Leader')
-                    ->formatStateUsing(fn ($record) => $record->leader ? 
+                    ->formatStateUsing(fn ($record) => $record->leader ?
                         $record->leader->first_name . ' ' . $record->leader->last_name : '-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('meeting_day')

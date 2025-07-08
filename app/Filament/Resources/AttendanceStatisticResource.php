@@ -25,8 +25,8 @@ class AttendanceStatisticResource extends Resource
     protected static ?string $model = AttendanceStatistic::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
-    protected static ?string $navigationGroup = 'Analytics';
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Attendance Management';
+    protected static ?int $navigationSort = 9;
     protected static ?string $navigationLabel = 'Attendance Analytics';
 
     // public static function getNavigationBadge(): ?string

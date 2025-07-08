@@ -28,7 +28,7 @@ class AttendanceRecordResource extends Resource
     protected static ?string $model = AttendanceRecord::class;
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
     protected static ?string $navigationGroup = 'Attendance Management';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
     {
@@ -76,7 +76,7 @@ class AttendanceRecordResource extends Resource
                 Select::make('age_group')
                     ->options([
                         'Adult' => 'Adult',
-                        'Youth' => 'Youth', 
+                        'Youth' => 'Youth',
                         'Child' => 'Child'
                     ]),
 
@@ -104,32 +104,32 @@ class AttendanceRecordResource extends Resource
             TextColumn::make('service.service_type')
                 ->sortable()
                 ->searchable(),
-                
+
             TextColumn::make('member.first_name')
                 ->label('Member Name')
                 ->sortable()
                 ->searchable(),
-                
+
             TextColumn::make('attendance_type')
                 ->sortable(),
-                
+
             TextColumn::make('check_in_time')
                 ->dateTime()
                 ->sortable(),
-                
+
             TextColumn::make('visitor_name')
                 ->searchable(),
-                
+
             ToggleColumn::make('follow_up_required')
         ])
         ->filters([
             SelectFilter::make('branch')
                 ->relationship('branch', 'name'),
-                
+
             SelectFilter::make('attendance_type')
                 ->options([
                     'Regular' => 'Regular',
-                    'Visitor' => 'Visitor', 
+                    'Visitor' => 'Visitor',
                     'First Timer' => 'First Timer',
                     'Online' => 'Online'
                 ])

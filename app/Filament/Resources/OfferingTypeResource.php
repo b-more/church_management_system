@@ -20,8 +20,8 @@ class OfferingTypeResource extends Resource
 {
     protected static ?string $model = OfferingType::class;
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
-    protected static ?string $navigationGroup = 'Finance Management';
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Configuration';
+    protected static ?int $navigationSort = 21;
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getNavigationBadge(): ?string

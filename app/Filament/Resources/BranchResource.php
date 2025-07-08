@@ -22,8 +22,8 @@ class BranchResource extends Resource
 {
     protected static ?string $model = Branch::class;
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-    protected static ?string $navigationGroup = 'Church Management';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationGroup = 'Configuration';
+    protected static ?int $navigationSort = 20;
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getNavigationBadge(): ?string

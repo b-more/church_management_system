@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TransactionCategorySeeder::class,
             FinancialPeriodSeeder::class,
+            ProjectCategorySeeder::class,
 
             BudgetSeeder::class,
             BranchSeeder::class,                // Then create users with those roles

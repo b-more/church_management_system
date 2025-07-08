@@ -29,6 +29,11 @@ class OfferingTypeSeeder extends Seeder
                 'is_active' => true
             ],
             [
+                'name' => 'Financial Partnership',
+                'description' => 'Voluntary partnerships where members support church ministries financially on a monthly basis',
+                'is_active' => true
+            ],
+            [
                 'name' => 'Funeral Contributions',
                 'description' => 'Support for bereaved families and funeral expenses',
                 'is_active' => false

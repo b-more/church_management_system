@@ -27,6 +27,7 @@ class MemberResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $recordTitleAttribute = 'full_name';
     protected static ?string $navigationGroup = 'Church Management';
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationBadge(): ?string
     {
